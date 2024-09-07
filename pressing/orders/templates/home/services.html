@@ -1,0 +1,233 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Our Services | Pressing Wash Dress Service</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <link href="{% static 'css/services.css' %}" rel="stylesheet">
+    <style>
+        /* Additional CSS for animations and design */
+        .fade-in {
+            opacity: 0;
+            animation: fadeIn 2s forwards;
+        }
+
+        @keyframes fadeIn {
+            to {
+                opacity: 1;
+            }
+        }
+
+        .hero {
+            background: url("{% static 'image/services_hero.jpg' %}") no-repeat center center;
+            background-size: cover;
+            color: #fff;
+            text-align: center;
+            padding: 100px 0;
+        }
+
+        .service-card {
+            transition: transform 0.3s ease-in-out;
+        }
+
+        .service-card:hover {
+            transform: scale(1.05);
+        }
+
+        .footer {
+            background-color: #343a40;
+            color: #fff;
+            padding: 10px 0;
+        }
+
+        .form-section {
+            margin: 50px 0;
+        }
+
+        .delivery-card {
+            border: 1px solid #ddd;
+            padding: 15px;
+            border-radius: 5px;
+            background: #f9f9f9;
+        }
+
+        .map-container {
+            height: 400px;
+            width: 100%;
+            background-color: #ddd;
+        }
+
+        /* Responsive adjustments */
+        @media (max-width: 768px) {
+            .hero {
+                padding: 60px 0;
+            }
+        }
+        .hero {
+    background: url('{% static "image/images.jpeg" %}') no-repeat center center;
+    background-size: cover;
+    color: rgba(255, 255, 255, 0.719);
+}
+    </style>
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <a class="navbar-brand" href="#">Pressing Wash</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav ml-auto">
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'home' %}">Home</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'about' %}">About Us</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'services' %}">Our Services</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'contact' %}">Contact Us</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'login' %}">Login</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'register' %}">Register</a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+
+    <header class="hero text-white text-center py-5 fade-in">
+        <h1>Our Services</h1>
+        <p>Discover our wide range of services designed to meet all your pressing and washing needs.</p>
+    </header>
+
+    <div class="container mt-5">
+        <h2 class="text-center mb-4">Our Service Offerings</h2>
+        <div class="row">
+            <!-- Sample Service Cards -->
+            <div class="col-md-4 mb-4">
+                <div class="card service-card fade-in">
+                    <img src="{% static 'image/pressing_service.jpeg' %}" class="card-img-top" alt="Pressing Service">
+                    <div class="card-body">
+                        <h5 class="card-title">Dress Pressing</h5>
+                        <p class="card-text">Expert pressing to keep your dresses looking sharp and wrinkle-free.</p>
+                        <a href="#" class="btn btn-primary">Learn More</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4 mb-4">
+                <div class="card service-card fade-in">
+                    <img src="{% static 'image/washing_service.jpeg' %}" class="card-img-top" alt="Washing Service">
+                    <div class="card-body">
+                        <h5 class="card-title">Wash & Care</h5>
+                        <p class="card-text">Gentle washing to preserve the quality and longevity of your garments.</p>
+                        <a href="#" class="btn btn-primary">Learn More</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4 mb-4">
+                <div class="card service-card fade-in">
+                    <img src="{% static 'image/pickup_service.jpeg' %}" class="card-img-top" alt="Pickup Service">
+                    <div class="card-body">
+                        <h5 class="card-title">Pickup & Delivery</h5>
+                        <p class="card-text">Convenient pickup and delivery service right at your doorstep.</p>
+                        <a href="#" class="btn btn-primary">Learn More</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="container mt-5">
+        <h2 class="text-center mb-4">Find Pressing Services Nearby</h2>
+        <div class="row">
+            <div class="col-md-12">
+                <div class="map-container" id="map"></div>
+            </div>
+        </div>
+    </div>
+
+    <div class="container mt-5">
+        <h2 class="text-center mb-4">Delivery Services</h2>
+        <div class="row">
+            <div class="col-md-4 mb-4">
+                <div class="delivery-card fade-in">
+                    <h5>Delivery Service 1</h5>
+                    <p>Responsible for picking up clothes from the client’s house, taking them to the pressing service, and delivering them back.</p>
+                    <a href="#" class="btn btn-primary">Learn More</a>
+                </div>
+            </div>
+            <div class="col-md-4 mb-4">
+                <div class="delivery-card fade-in">
+                    <h5>Delivery Service 2</h5>
+                    <p>Reliable delivery service with punctual pickup and drop-off options for all your pressing needs.</p>
+                    <a href="#" class="btn btn-primary">Learn More</a>
+                </div>
+            </div>
+            <div class="col-md-4 mb-4">
+                <div class="delivery-card fade-in">
+                    <h5>Delivery Service 3</h5>
+                    <p>Efficient delivery service ensuring timely transportation of garments to and from pressing services.</p>
+                    <a href="#" class="btn btn-primary">Learn More</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="footer text-center mt-4">
+        <p>&copy; 2024 Pressing Wash, All Rights Reserved.</p>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script src="{% static 'js/services.js' %}"></script>
+<!-- Google Maps API -->
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAOVYRIgupAurZup5y1PRh8Ismb1A3lLao&libraries=places&callback=initMap"></script>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Example of custom animation
+            const serviceCards = document.querySelectorAll('.service-card');
+            serviceCards.forEach(card => {
+                card.addEventListener('mouseover', function() {
+                    this.classList.add('animate__animated', 'animate__pulse');
+                });
+                card.addEventListener('mouseout', function() {
+                    this.classList.remove('animate__animated', 'animate__pulse');
+                });
+            });
+            
+            // Initialize map
+            window.initMap = function() {
+                const map = new google.maps.Map(document.getElementById('map'), {
+                    zoom: 12,
+                    center: { lat: -34.397, lng: 150.644 } // Default location
+                });
+                
+                // Add markers for pressing services
+                const services = [
+                    { lat: -34.397, lng: 150.644, name: "Pressing Service 1" },
+                    { lat: -34.407, lng: 150.654, name: "Pressing Service 2" }
+                ];
+                
+                services.forEach(service => {
+                    new google.maps.Marker({
+                        position: { lat: service.lat, lng: service.lng },
+                        map: map,
+                        title: service.name
+                    });
+                });
+            }
+        });
+    </script>
+</body>
+</html>

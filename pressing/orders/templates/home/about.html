@@ -1,0 +1,208 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>About Us | Pressing Wash Dress Service</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <link href="{% static 'css/about.css' %}" rel="stylesheet">
+    <style>
+        /* Additional CSS for animations and design */
+        .fade-in {
+            opacity: 0;
+            animation: fadeIn 2s forwards;
+        }
+
+        @keyframes fadeIn {
+            to {
+                opacity: 1;
+            }
+        }
+
+        .hero {
+            background: url("{% static 'image/about_hero.jpg' %}") no-repeat center center;
+            background-size: cover;
+            color: #fff;
+            text-align: center;
+            padding: 100px 0;
+        }
+
+        .section {
+            padding: 60px 0;
+        }
+
+        .team-member {
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .team-member:hover {
+            transform: scale(1.05);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+        }
+
+        .team-member img {
+            border-radius: 50%;
+        }
+
+        .portfolio-item {
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .portfolio-item:hover {
+            transform: scale(1.05);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+        }
+
+        .portfolio-item img {
+            width: 100%;
+            border-radius: 8px;
+        }
+
+        .contact {
+            background-color: #f8f9fa;
+            padding: 20px;
+            border-radius: 8px;
+        }
+
+        .footer {
+            background-color: #343a40;
+            color: #fff;
+            padding: 10px 0;
+        }
+        .hero {
+    background: url('{% static "image/images.jpeg" %}') no-repeat center center;
+    background-size: cover;
+    color: rgba(255, 255, 255, 0.719);
+}
+    </style>
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <a class="navbar-brand" href="#">Pressing Wash</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav ml-auto">
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'home' %}">Home</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'about' %}">About Us</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'services' %}">Our Services</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'contact' %}">Contact Us</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'login' %}">Login</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'register' %}">Register</a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+
+    <header class="hero text-white text-center py-5 fade-in">
+        <h1>About Us</h1>
+        <p>Learn more about our mission, team, and the services we offer.</p>
+    </header>
+
+    <div class="container section fade-in">
+        <h2 class="text-center mb-4">Our Mission</h2>
+        <p class="text-center">At Pressing Wash, our mission is to provide exceptional dress care services with convenience and efficiency. We are dedicated to ensuring the highest quality of pressing and washing, delivering impeccable results every time.</p>
+    </div>
+
+    <div class="container section fade-in">
+        <h2 class="text-center mb-4">Meet Our Team</h2>
+        <div class="row">
+            <div class="col-md-4 mb-4">
+                <div class="team-member text-center">
+                    <img src="{% static 'image/washing_service.jpeg' %}" alt="Team Member 1" class="img-fluid">
+                    <h5>John Doe</h5>
+                    <p>Founder & CEO</p>
+                </div>
+            </div>
+            <div class="col-md-4 mb-4">
+                <div class="team-member text-center">
+                    <img src="{% static 'image/washing_service.jpeg' %}" alt="Team Member 2" class="img-fluid">
+                    <h5>Jane Smith</h5>
+                    <p>Chief Operating Officer</p>
+                </div>
+            </div>
+            <div class="col-md-4 mb-4">
+                <div class="team-member text-center">
+                    <img src="{% static 'image/washing_service.jpeg' %}" alt="Team Member 3" class="img-fluid">
+                    <h5>Mike Johnson</h5>
+                    <p>Head of Customer Service</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="container section fade-in">
+        <h2 class="text-center mb-4">Our Portfolio</h2>
+        <div class="row">
+            <div class="col-md-4 mb-4">
+                <div class="portfolio-item">
+                    <img src="{% static 'image/pickup_service.jpeg' %}" alt="Portfolio Item 1" class="img-fluid">
+                    <h5 class="text-center mt-2">Dress Pressing Excellence</h5>
+                </div>
+            </div>
+            <div class="col-md-4 mb-4">
+                <div class="portfolio-item">
+                    <img src="{% static 'image/pickup_service.jpeg' %}" alt="Portfolio Item 2" class="img-fluid">
+                    <h5 class="text-center mt-2">High-Quality Wash Services</h5>
+                </div>
+            </div>
+            <div class="col-md-4 mb-4">
+                <div class="portfolio-item">
+                    <img src="{% static 'image/pickup_service.jpeg' %}" alt="Portfolio Item 3" class="img-fluid">
+                    <h5 class="text-center mt-2">Efficient Pickup & Delivery</h5>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="contact container mt-5">
+        <h2 class="text-center">Get in Touch</h2>
+        <p class="text-center">For inquiries or more information about our services, feel free to contact us.</p>
+        <form>
+            <div class="form-group">
+                <label for="name">Name</label>
+                <input type="text" class="form-control" id="name" required>
+            </div>
+            <div class="form-group">
+                <label for="email">Email address</label>
+                <input type="email" class="form-control" id="email" required>
+            </div>
+            <div class="form-group">
+                <label for="message">Message</label>
+                <textarea class="form-control" id="message" rows="4" required></textarea>
+            </div>
+            <button type="submit" class="btn btn-primary">Send Message</button>
+        </form>
+    </div>
+
+    <div class="footer text-center mt-4">
+        <p>&copy; 2024 Pressing Wash, All Rights Reserved.</p>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script src="{% static 'js/about.js' %}"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Example of custom animation
+            const heroText = document.querySelector('.hero h1');
+            heroText.classList.add('animate__animated', 'animate__fadeInUp');
+        });
+    </script>
+</body>
+</html>

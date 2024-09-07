@@ -1,0 +1,170 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pressing Wash Dress Service</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
+
+
+
+    <link href="{% static 'css/home.css' %}" rel="stylesheet">
+
+<style>
+.hero {
+    background: url('{% static "image/images.jpeg" %}') no-repeat center center;
+    background-size: cover;
+    color: rgba(255, 255, 255, 0.719);
+}
+</style>
+
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <a class="navbar-brand" href="#">Pressing Wash</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav ml-auto">
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'home' %}">Home</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'about' %}">About Us</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'services' %}">Our Services</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'contact' %}">Contact Us</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'login' %}">Login</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'register' %}">Register</a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+
+    <header class="hero text-white text-center py-5">
+        <h1 class="animate__animated animate__fadeIn">Effortless Dress Care</h1>
+        <p class="animate__animated animate__fadeIn animate__delay-1s">Your trusted partner for pressing and washing dresses.</p>
+        <a href="{% url 'services' %}" class="btn btn-light btn-lg animate__animated animate__fadeIn animate__delay-2s">Explore Our Services</a>
+    </header>
+
+    <div class="container mt-5">
+        <h2 class="text-center mb-4">Why Choose Us?</h2>
+        <div class="row">
+            <div class="col-md-4 text-center mb-4">
+                <div class="service-card">
+                    <h4>Quality Assurance</h4>
+                    <p>We ensure the highest standards of cleanliness and care for your dresses, with a dedicated team of professionals and state-of-the-art equipment. Each garment is inspected to meet our rigorous quality criteria before being returned to you.</p>
+                </div>
+            </div>
+            <div class="col-md-4 text-center mb-4">
+                <div class="service-card">
+                    <h4>Fast Service</h4>
+                    <p>Enjoy quick turnaround times with our efficient service without compromising on quality. Perfect for those busy days when you need your clothes ready in no time. Same-day service is available upon request.</p>
+                </div>
+            </div>
+            <div class="col-md-4 text-center mb-4">
+                <div class="service-card">
+                    <h4>Convenient App</h4>
+                    <p>Order our services on the go with our user-friendly app. Schedule pickups, track your orders, and make payments seamlessly from your mobile device. Receive notifications and updates about your service status in real-time.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="container mt-5">
+        <h2 class="text-center mb-4">Our Services</h2>
+        <div class="row">
+            <div class="col-md-4 mb-4">
+                <div class="card">
+                    <img src="{% static 'image/pressing_service.jpeg' %}" class="card-img-top" alt="Pressing Service">
+                    <div class="card-body">
+                        <h5 class="card-title">Dress Pressing</h5>
+                        <p class="card-text">Expert pressing to keep your dresses looking sharp. We use premium pressing techniques to ensure every garment is perfectly smooth and wrinkle-free. Ideal for special occasions or everyday wear.</p>
+                        <a href="{% url 'services' %}#pressing" class="btn btn-primary">Learn More</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4 mb-4">
+                <div class="card">
+                    <img src="{% static 'image/washing_service.jpeg' %}" class="card-img-top" alt="Washing Service">
+                    <div class="card-body">
+                        <h5 class="card-title">Wash & Care</h5>
+                        <p class="card-text">Gentle washing to preserve fabric quality. Our eco-friendly cleaning products and techniques ensure your garments are thoroughly cleaned while maintaining their integrity. Suitable for delicate and everyday fabrics.</p>
+                        <a href="{% url 'services' %}#washing" class="btn btn-primary">Learn More</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4 mb-4">
+                <div class="card">
+                    <img src="{% static 'image/pickup_service.jpeg' %}" class="card-img-top" alt="Pickup Service">
+                    <div class="card-body">
+                        <h5 class="card-title">Pickup & Delivery</h5>
+                        <p class="card-text">Convenient pickup and delivery service for your ease. We offer flexible scheduling to fit your needs, so you can focus on what matters most. Service available in multiple locations with prompt, courteous drivers.</p>
+                        <a href="{% url 'services' %}#pickup" class="btn btn-primary">Learn More</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Video Promotion Section -->
+    <div class="container mt-5">
+        <h2 class="text-center mb-4">Watch Our Story</h2>
+        <div class="video-container">
+            <video id="promoVideo" class="animate__animated animate__fadeIn" autoplay muted playsinline>
+                <source src="{% static 'assets/videos.mp4' %}" type="video/mp4">
+                Your browser does not support the video tag.
+            </video>
+        </div>
+    </div>
+
+    <div class="contact container mt-5">
+        <h2 class="text-center mb-4">Contact Us</h2>
+        <p class="text-center">For any inquiries or support, please contact us at:</p>
+        <p class="text-center">Email: <a href="mailto:contact@pressingwash.com">contact@pressingwash.com</a> | Phone: <a href="tel:+23709876282972">237 09876282972</a></p>
+        <p class="text-center">We are here to assist you from Monday to Saturday, 8 AM to 8 PM. Our customer support team is ready to provide you with the best service possible.</p>
+    </div>
+
+    <div class="footer text-center mt-4">
+        <p>&copy; 2024 Pressing Wash, All Rights Reserved.</p>
+        <p>Follow us on <a href="https://facebook.com/pressingwash" target="_blank">Facebook</a>, <a href="https://twitter.com/pressingwash" target="_blank">Twitter</a>, and <a href="https://instagram.com/pressingwash" target="_blank">Instagram</a> for the latest updates and promotions.</p>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+    <script>
+        // Animation on scroll
+$(document).ready(function() {
+  $(window).scroll(function() {
+    var scrollPosition = $(window).scrollTop();
+    $(".animate__animated").each(function() {
+      var $this = $(this);
+      var offsetTop = $this.offset().top;
+      if (scrollPosition > offsetTop - 200) {
+        $this.addClass("animate__fadeIn");
+      }
+    });
+  });
+});
+
+// Video playback
+$(document).ready(function() {
+  var video = document.getElementById("promoVideo");
+  video.play();
+});
+    </script>
+</body>
+</html>

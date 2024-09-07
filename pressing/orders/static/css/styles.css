@@ -1,0 +1,30 @@
+.form-container {
+    max-width: 500px;
+    margin: 50px auto;
+    padding: 20px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    background-color: #f9f9f9;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.social-login {
+    margin-top: 20px;
+}
+
+/* Responsive styles */
+@media (max-width: 576px) {
+    .form-container {
+        margin: 20px;
+        padding: 15px;
+    }
+}
+
+/* Animation for buttons */
+.btn-social {
+    transition: transform 0.3s ease;
+}
+
+.btn-social:hover {
+    transform: scale(1.1);
+}

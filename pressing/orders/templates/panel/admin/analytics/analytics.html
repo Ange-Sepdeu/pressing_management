@@ -1,0 +1,252 @@
+{% load static %}
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Analytics & Reporting</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.7.0/chart.min.js"></script>
+</head>
+
+<style>
+    /* Global Styles */
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    line-height: 1.6;
+    color: #333;
+    background-color: #f9f9f9;
+}
+
+a {
+    text-decoration: none;
+    color: #337ab7;
+}
+
+a:hover {
+    color: #23527c;
+}
+
+/* Dashboard Styles */
+
+.dashboard {
+    display: flex;
+    flex-direction: row;
+    height: 100vh;
+}
+
+.dashboard-nav {
+    background-color: #333;
+    color: #fff;
+    padding: 1rem;
+    width: 250px;
+}
+
+.dashboard-nav .brand-logo {
+    font-size: 1.5rem;
+    font-weight: bold;
+    margin-bottom: 1rem;
+    display: flex;
+    align-items: center;
+}
+
+.dashboard-nav .brand-logo i {
+    margin-right: 0.5rem;
+}
+
+.dashboard-nav .profile-avatar {
+    margin-bottom: 1rem;
+}
+
+.dashboard-nav .profile-avatar img {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+}
+
+.dashboard-nav-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.dashboard-nav-item {
+    padding: 0.5rem;
+    display: block;
+    color: #fff;
+    transition: background-color 0.2s ease;
+}
+
+.dashboard-nav-item:hover {
+    background-color: #444;
+}
+
+.dashboard-nav-item i {
+    margin-right: 0.5rem;
+}
+
+.logout-btn {
+    background-color: #337ab7;
+    color: #fff;
+    border: none;
+    padding: 0.5rem 1rem;
+    font-size: 1rem;
+    cursor: pointer;
+}
+
+.logout-btn:hover {
+    background-color: #23527c;
+}
+
+/* Container Styles */
+
+.container {
+    padding: 2rem;
+    margin-left: 250px;
+}
+
+/* Analytics Styles */
+
+.card {
+    margin-bottom: 1rem;
+}
+
+.card-header {
+    padding: 0.5rem;
+    font-weight: bold;
+}
+
+.card-body {
+    padding: 1rem;
+}
+
+.card-title {
+    font-size: 1.5rem;
+    font-weight: bold;
+}
+
+/* Chart Styles */
+
+#chatMessagesChart {
+    width: 100%;
+    height: 300px;
+    margin-bottom: 2rem;
+}
+</style>
+<body>
+    <div class="dashboard">
+        <div class="dashboard-nav">
+            <header>
+                <a href="{% url 'admin_panel' %}" class="brand-logo animate__animated animate__fadeInLeft">
+                    <i class="fas fa-tshirt"></i> 
+                    <span>PressPro admin Dashboard</span>
+                </a>
+                <div class="profile-avatar">
+                    {% if user.profile_picture %}
+                        <img src="{{ user.profile_picture.url }}" alt="{{ user.username }}'s Avatar" class="img-fluid">
+                    {% else %}
+                        <img src="{% static 'image/auth.jpeg' %}" alt="Default Avatar" class="img-fluid">
+                    {% endif %}
+                </div>
+            </header>
+            <nav class="dashboard-nav-list">
+                <a href="{% url 'admin_panel' %}" class="dashboard-nav-item"><i class="fas fa-tachometer-alt"></i> Dashboard</a>
+                <a href="{% url 'user_management' %}" class="dashboard-nav-item"><i class="fas fa-user-check"></i> User Management</a>
+                <a href="{% url 'add_pressing' %}" class="dashboard-nav-item"><i class="fas fa-tools"></i> Platform Management</a>
+                <a href="{% url 'analytics' %}" class="dashboard-nav-item"><i class="fas fa-chart-bar"></i> Analytics & Reporting</a>
+                <a href="{% url 'chat' %}" class="dashboard-nav-item"><i class="fas fa-headset"></i> Chat with deliver</a>
+                <a href="#" class="dashboard-nav-item"><i class="fas fa-wallet"></i> Payment Management</a>
+                <a href="#" class="dashboard-nav-item"><i class="fas fa-handshake"></i> Partner Management</a>
+                <a href="{% url 'marketing_promotions' %}" class="dashboard-nav-item"><i class="fas fa-bullhorn"></i> Marketing & Promotions</a>
+                <a href="{% url 'setting' %}" class="dashboard-nav-item"><i class="fas fa-cogs"></i> Settings</a>
+                <a href="{% url 'about_us_dev' %}" class="dashboard-nav-item"><i class="fas fa-info-circle"></i> About Us Dev</a>
+            </nav>
+            <a href="{% url 'logout' %}" class="btn btn-primary logout-btn">Logout</a>
+        </div>
+
+    <div class="container mt-5">
+        <h2>Analytics & Reporting</h2>
+        <div class="row">
+            <div class="col-md-4">
+                <div class="card text-white bg-primary mb-3">
+                    <div class="card-header">Users</div>
+                    <div class="card-body">
+                        <h5 class="card-title">{{ user_count }}</h5>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card text-white bg-success mb-3">
+                    <div class="card-header">Contacts</div>
+                    <div class="card-body">
+                        <h5 class="card-title">{{ contact_count }}</h5>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card text-white bg-info mb-3">
+                    <div class="card-header">Pressing Profiles</div>
+                    <div class="card-body">
+                        <h5 class="card-title">{{ pressing_profile_count }}</h5>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-4">
+                <div class="card text-white bg-warning mb-3">
+                    <div class="card-header">Receipts</div>
+                    <div class="card-body">
+                        <h5 class="card-title">{{ receipt_count }}</h5>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card text-white bg-danger mb-3">
+                    <div class="card-header">Chat Messages</div>
+                    <div class="card-body">
+                        <h5 class="card-title">{{ chat_message_count }}</h5>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <h3>Chat Messages Over Time</h3>
+        <canvas id="chatMessagesChart"></canvas>
+    </div>
+
+    <script>
+        const ctx = document.getElementById('chatMessagesChart').getContext('2d');
+        const chatMessagesChart = new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: ['January', 'February', 'March', 'April', 'May', 'June'], // Replace with actual months
+                datasets: [{
+                    label: 'Chat Messages',
+                    data: [12, 19, 3, 5, 2, 3], // Replace with actual data
+                    borderColor: 'rgba(75, 192, 192, 1)',
+                    borderWidth: 2,
+                    fill: false,
+                }]
+            },
+            options: {
+                responsive: true,
+                scales: {
+                    y: {
+                        beginAtZero: true
+                    }
+                }
+            }
+        });
+    </script>
+</body>
+</html>

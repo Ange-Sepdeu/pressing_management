@@ -462,3 +462,97 @@ def marketing_promotions(request):
 
     pressings = PressingProfile.objects.all()
     return render(request, 'panel/admin/marketing/marketing_promotions.html', {'pressings': pressings})
+
+
+
+@login_required
+def add_pressing(request):
+    if request.method == 'POST':
+        profile_form = PressingProfileForm(request.POST, request.FILES)
+        photo_form = PhotoForm(request.POST, request.FILES)
+        video_form = VideoForm(request.POST, request.FILES)
+
+        if profile_form.is_valid() and photo_form.is_valid() and video_form.is_valid():
+            profile = profile_form.save(commit=False)
+            profile.user = request.user
+            profile.save()
+
+            # Save photos
+            photos = request.FILES.getlist('photos')
+            for photo in photos:
+                new_photo = Photo(image=photo)
+                new_photo.save()
+                profile.photos.add(new_photo)
+
+            # Save videos
+            videos = request.FILES.getlist('videos')
+            for video in videos:
+                new_video = Video(video_file=video)
+                new_video.save()
+                profile.videos.add(new_video)
+
+            profile.save()
+
+            messages.success(request, "Pressing added successfully!")
+            return redirect('add_pressing')
+        else:
+            messages.error(request, "Please correct the errors below.")
+    else:
+        profile_form = PressingProfileForm()
+        photo_form = PhotoForm()
+        video_form = VideoForm()
+
+    return render(request, 'panel/admin/platform_management/add_pressing.html', {
+        'profile_form': profile_form,
+        'photo_form': photo_form,
+        'video_form': video_form,
+    })
+
+
+
+
+@login_required
+def chat_view(request):
+    users = CustomUser.objects.exclude(id=request.user.id)  # Get all users except the logged-in user
+    return render(request, 'panel/admin/chat/chat_room.html', {'users': users})
+
+@login_required
+def send_message(request):
+    if request.method == 'POST':
+        receiver_id = request.POST.get('receiver_id')
+        message_text = request.POST.get('message')
+
+        receiver = get_object_or_404(CustomUser, id=receiver_id)
+        message = ChatMessage.objects.create(sender=request.user, receiver=receiver, message=message_text)
+
+        return JsonResponse({'status': 'success', 'message_id': message.id})
+
+@login_required
+def get_messages(request, user_id):
+    user = get_object_or_404(CustomUser, id=user_id)
+    messages = ChatMessage.objects.filter(
+        (models.Q(sender=request.user) & models.Q(receiver=user)) |
+        (models.Q(sender=user) & models.Q(receiver=request.user))
+    ).order_by('timestamp')
+
+    return JsonResponse({'messages': list(messages.values())})
+
+
+
+from .models import CustomUser, Contact, PressingProfile, Receipt, ChatMessage
+
+def analytics_view(request):
+    user_count = CustomUser.objects.count()
+    contact_count = Contact.objects.count()
+    pressing_profile_count = PressingProfile.objects.count()
+    receipt_count = Receipt.objects.count()
+    chat_message_count = ChatMessage.objects.count()
+
+    context = {
+        'user_count': user_count,
+        'contact_count': contact_count,
+        'pressing_profile_count': pressing_profile_count,
+        'receipt_count': receipt_count,
+        'chat_message_count': chat_message_count,
+    }
+    return render(request, 'panel/admin/analytics/analytics.html', context)

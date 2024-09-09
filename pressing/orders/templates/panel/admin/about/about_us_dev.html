@@ -30,13 +30,13 @@
             <nav class="dashboard-nav-list">
                 <a href="{% url 'admin_panel' %}" class="dashboard-nav-item"><i class="fas fa-tachometer-alt"></i> Dashboard</a>
                 <a href="{% url 'user_management' %}" class="dashboard-nav-item"><i class="fas fa-user-check"></i> User Management</a>
-                <a href="#" class="dashboard-nav-item"><i class="fas fa-tools"></i> Platform Management</a>
+                <a href="{% url 'add_pressing' %}" class="dashboard-nav-item"><i class="fas fa-tools"></i> Platform Management</a>
                 <a href="#" class="dashboard-nav-item"><i class="fas fa-chart-bar"></i> Analytics & Reporting</a>
-                <a href="#" class="dashboard-nav-item"><i class="fas fa-headset"></i> Customer Support</a>
+                <a href="{% url 'chat' %}" class="dashboard-nav-item"><i class="fas fa-headset"></i> chat with deliver</a>
                 <a href="#" class="dashboard-nav-item"><i class="fas fa-wallet"></i> Payment Management</a>
                 <a href="#" class="dashboard-nav-item"><i class="fas fa-handshake"></i> Partner Management</a>
-                <a href="#" class="dashboard-nav-item"><i class="fas fa-bullhorn"></i> Marketing & Promotions</a>
-                <a href="#" class="dashboard-nav-item"><i class="fas fa-cogs"></i> Settings</a>
+                <a href="{% url 'marketing_promotions' %}" class="dashboard-nav-item"><i class="fas fa-bullhorn"></i> Marketing & Promotions</a>
+                <a href="{% url 'setting' %}" class="dashboard-nav-item"><i class="fas fa-cogs"></i> Settings</a>
                 <a href="{% url 'about_us_dev' %}" class="dashboard-nav-item active"><i class="fas fa-info-circle"></i> About Us Dev</a>
             </nav>
             <a href="{% url 'logout' %}" class="btn btn-primary logout-btn">Logout</a>

@@ -1,0 +1,91 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add Pressing</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="{% static 'css/platform_management.css' %}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
+    <script src="https://kit.fontawesome.com/a076d05399.js"></script>
+    <link rel="stylesheet" href="{% static 'css/platform_management.css' %}">
+
+</head>
+<body>
+    <div class="dashboard">
+        <div class="dashboard-nav">
+            <header>
+                <a href="{% url 'admin_panel' %}" class="brand-logo animate__animated animate__fadeInLeft">
+                    <i class="fas fa-tshirt"></i> 
+                    <span>PressPro admin Dashboard</span>
+                </a>
+                <div class="profile-avatar">
+                    {% if user.profile_picture %}
+                        <img src="{{ user.profile_picture.url }}" alt="{{ user.username }}'s Avatar" class="img-fluid">
+                    {% else %}
+                        <img src="{% static 'image/auth.jpeg' %}" alt="Default Avatar" class="img-fluid">
+                    {% endif %}
+                </div>
+            </header>
+            <nav class="dashboard-nav-list">
+                <a href="{% url 'admin_panel' %}" class="dashboard-nav-item"><i class="fas fa-tachometer-alt"></i> Dashboard</a>
+                <a href="{% url 'user_management' %}" class="dashboard-nav-item"><i class="fas fa-user-check"></i> User Management</a>
+                <a href="{% url 'add_pressing' %}" class="dashboard-nav-item"><i class="fas fa-tools"></i> Platform Management</a>
+                <a href="{% url 'analytics' %}" class="dashboard-nav-item"><i class="fas fa-chart-bar"></i> Analytics & Reporting</a>
+                <a href="{% url 'chat' %}" class="dashboard-nav-item"><i class="fas fa-headset"></i> Chat with deliver</a>
+                <a href="#" class="dashboard-nav-item"><i class="fas fa-wallet"></i> Payment Management</a>
+                <a href="#" class="dashboard-nav-item"><i class="fas fa-handshake"></i> Partner Management</a>
+                <a href="{% url 'marketing_promotions' %}" class="dashboard-nav-item"><i class="fas fa-bullhorn"></i> Marketing & Promotions</a>
+                <a href="{% url 'setting' %}" class="dashboard-nav-item"><i class="fas fa-cogs"></i> Settings</a>
+                <a href="{% url 'about_us_dev' %}" class="dashboard-nav-item"><i class="fas fa-info-circle"></i> About Us Dev</a>
+            </nav>
+            <a href="{% url 'logout' %}" class="btn btn-primary logout-btn">Logout</a>
+        </div>
+    <div class="container my-5">
+        <h1 class="display-4 text-center animate__animated animate__fadeInUp">Add New Pressing</h1>
+        <div class="card mt-4 animate__animated animate__fadeIn">
+            <div class="card-header">
+                <h2>Pressing Information</h2>
+            </div>
+            <div class="card-body">
+                <form method="post" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    <div class="form-group">
+                        {{ profile_form.business_name.label_tag }} {{ profile_form.business_name }}
+                    </div>
+                    <div class="form-group">
+                        {{ profile_form.location.label_tag }} {{ profile_form.location }}
+                    </div>
+                    <div class="form-group">
+                        {{ profile_form.services_offered.label_tag }} {{ profile_form.services_offered }}
+                    </div>
+                    <div class="form-group">
+                        {{ profile_form.pricing.label_tag }} {{ profile_form.pricing }}
+                    </div>
+                    <div class="form-group">
+                        {{ profile_form.about_us.label_tag }} {{ profile_form.about_us }}
+                    </div>
+                    <div class="form-group">
+                        {{ profile_form.pressing_count.label_tag }} {{ profile_form.pressing_count }}
+                    </div>
+                    <div class="form-group">
+                        {{ photo_form.image.label_tag }} {{ photo_form.image }}
+                        <small class="form-text text-muted">You can select multiple images.</small>
+                    </div>
+                    <div class="form-group">
+                        {{ video_form.video_file.label_tag }} {{ video_form.video_file }}
+                        <small class="form-text text-muted">You can select multiple videos.</small>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Add Pressing</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>

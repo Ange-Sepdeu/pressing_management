@@ -2,7 +2,9 @@ from django.urls import path
 from . import views
 from django.contrib.auth import views as auth_views  # Add this import
 from .views import apply_portfolio, portfolio_selection, process_payment, download_receipt  # Import process_payment
-from .views import chat_view, marketing_promotions
+from .views import chat_view, marketing_promotions, add_pressing
+from .views import send_message, get_messages, analytics_view
+
 
 
 
@@ -41,6 +43,13 @@ urlpatterns = [
     path('delete-user/<int:user_id>/', views.delete_user, name='delete_user'),
     path('about_us_dev/', views.about_us_dev, name='about_us_dev'),
     path('marketing-promotions/', marketing_promotions, name='marketing_promotions'),
+    path('platform_management/add_pressing/', add_pressing, name='add_pressing'),
+    path('chat/send/', send_message, name='send_message'),
+    path('chat/messages/<int:user_id>/', get_messages, name='get_messages'),
+    path('analytics/', analytics_view, name='analytics'),
+
+ 
+
 
 
 

@@ -1,0 +1,233 @@
+{% load static %}
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Customer Feedback</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+
+    body {
+        font-family: 'Arial', sans-serif;
+        background-color: #f8f9fa;
+        color: #343a40;
+    }
+
+    .dashboard {
+        display: flex;
+        height: 100vh;
+    }
+
+    .dashboard-nav {
+        width: 250px;
+        background-color: #343a40;
+        color: white;
+        padding: 20px;
+    }
+
+    .brand-logo {
+        display: flex;
+        align-items: center;
+        margin-bottom: 20px;
+        color: white;
+        text-decoration: none;
+    }
+
+    .brand-logo i {
+        font-size: 24px;
+        margin-right: 10px;
+    }
+
+    .profile-avatar {
+        text-align: center;
+        margin-bottom: 20px;
+    }
+
+    .dashboard-nav-list {
+        list-style-type: none;
+        padding: 0;
+    }
+
+    .dashboard-nav-item {
+        display: block;
+        padding: 10px 15px;
+        color: white;
+        text-decoration: none;
+        border-radius: 5px;
+    }
+
+    .dashboard-nav-item:hover,
+    .dashboard-nav-item.active {
+        background-color: #495057;
+    }
+
+    .logout-btn {
+        margin-top: 20px;
+        width: 100%;
+    }
+
+    .container {
+        flex-grow: 1;
+        padding: 20px;
+    }
+
+    .feedback-card {
+        margin-bottom: 20px;
+        border: 1px solid #dee2e6;
+        border-radius: 8px;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    }
+
+    .feedback-card h5 {
+        font-weight: bold;
+    }
+
+    .modal-header {
+        background-color: #007bff;
+        color: white;
+    }
+
+    .modal-content {
+        border-radius: 8px;
+    }
+
+    .btn {
+        border-radius: 5px;
+    }
+
+    @media (max-width: 768px) {
+        .dashboard {
+            flex-direction: column;
+            height: auto;
+        }
+
+        .dashboard-nav {
+            width: 100%;
+            height: auto;
+        }
+
+        .container {
+            padding: 10px;
+        }
+    }
+    header .profile-avatar {
+    display: flex;
+    align-items: center;
+    border: 2px solid #ffc107;
+    border-radius: 50%;
+    overflow: hidden;
+    width: 50px;
+    height: 50px;
+    background-color: #495057;
+    position: relative;
+}
+
+header .profile-avatar img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 50%;
+}
+</style>
+</head>
+<body>
+    <div class="dashboard">
+        <div class="dashboard-nav">
+            <header>
+                <a href="{% url 'pressing_manager' %}" class="brand-logo animate__animated animate__fadeInLeft">
+                    <i class="fas fa-tshirt"></i> 
+                    <span>PressPro  Manager Dashboard</span>
+                </a>
+                <div class="profile-avatar">
+                    {% if user.profile_picture %}
+                        <img src="{{ user.profile_picture.url }}" alt="{{ user.username }}'s Avatar" class="img-fluid">
+                    {% else %}
+                        <img src="{% static 'image/auth.jpeg' %}" alt="Default Avatar" class="img-fluid">
+                    {% endif %}
+                </div>
+            </header>
+            <nav class="dashboard-nav-list">
+                <a href="{% url 'pressing_manager' %}" class="dashboard-nav-item active"><i class="fas fa-tachometer-alt"></i> Dashboard</a>
+                <a href="" class="dashboard-nav-item"><i class="fas fa-users-cog"></i> Apply Portfolio</a>
+                <a href="{% url 'chat' %}" class="dashboard-nav-item"><i class="fas fa-comments"></i> Chat with Delivery Team</a>
+                <a href="#" class="dashboard-nav-item"><i class="fas fa-tasks"></i> Manage Orders</a>
+                <a href="#" class="dashboard-nav-item"><i class="fas fa-map-marked-alt"></i> Track Deliveries</a>
+                <a href="{% url 'customer_feedback' %}" class="dashboard-nav-item"><i class="fas fa-thumbs-up"></i> Customer Feedback</a>
+                <a href="#" class="dashboard-nav-item"><i class="fas fa-bell"></i> Notifications</a>
+                <a href="{% url 'setting' %}" class="dashboard-nav-item"><i class="fas fa-cogs"></i> Settings</a>
+                <a href="{% url 'about_us' %}" class="dashboard-nav-item"><i class="fas fa-info-circle"></i> About Us</a>
+            </nav>
+            <a href="{% url 'logout' %}" class="btn btn-primary logout-btn">Logout</a>
+        </div>
+<div class="container">
+    <h1 class="mb-4">Customer Feedback</h1>
+
+    {% for contact in contacts %}
+        <div class="card feedback-card">
+            <div class="card-body">
+                <h5 class="card-title">{{ contact.email }}</h5>
+                <p class="card-text">{{ contact.description }}</p>
+                <p class="card-text"><small class="text-muted">{{ contact.date }}</small></p>
+                <form method="post" class="d-inline">
+                    {% csrf_token %}
+                    <input type="hidden" name="delete" value="{{ contact.id }}">  <!-- Hidden input to carry the contact id -->
+                    <button type="submit" class="btn btn-danger btn-sm">Delete</button>
+                </form>
+                <button class="btn btn-primary btn-sm" data-toggle="modal" data-target="#replyModal{{ contact.id }}">Reply</button>
+            </div>
+        </div>
+
+        <!-- Reply Modal -->
+        <div class="modal fade" id="replyModal{{ contact.id }}" tabindex="-1" role="dialog" aria-labelledby="replyModalLabel" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="replyModalLabel">Reply to {{ contact.email }}</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <form method="post">
+                            {% csrf_token %}
+                            <input type="hidden" name="contact_id" value="{{ contact.id }}">
+                            {{ reply_form.as_p }}
+                            <button type="submit" name="reply" class="btn btn-success">Send Reply</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    {% endfor %}
+</div>
+
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+<script>// Get all reply modals
+    const replyModals = document.querySelectorAll('.modal');
+    
+    // Add event listener to each reply modal
+    replyModals.forEach((modal) => {
+        modal.addEventListener('show.bs.modal', (event) => {
+            // Get the button that triggered the modal
+            const button = event.relatedTarget;
+    
+            // Get the contact ID from the button
+            const contactId = button.getAttribute('data-contact-id');
+    
+            // Get the reply form
+            const replyForm = modal.querySelector('form');
+    
+            // Set the contact ID in the reply form
+            replyForm.querySelector('input[name="contact_id"]').value = contactId;
+        });
+    });
+    
+    </script>
+</body>
+</html>

@@ -38,10 +38,6 @@
             background-color: #0056b3;
             transform: scale(1.05);
         }
-        .btn-primary:focus, .btn-primary:active {
-            outline: none;
-            box-shadow: none;
-        }
         .text-center p a {
             display: inline-block;
             margin-top: 10px;
@@ -69,7 +65,26 @@
             <h2>Register</h2>
             <form method="post">
                 {% csrf_token %}
-                {{ form.as_p }}
+                <div class="form-group">
+                    <label for="{{ form.username.id_for_label }}">Username</label>
+                    {{ form.username }}
+                </div>
+                <div class="form-group">
+                    <label for="{{ form.email.id_for_label }}">Email</label>
+                    {{ form.email }}
+                </div>
+                <div class="form-group">
+                    <label for="{{ form.password1.id_for_label }}">Password</label>
+                    {{ form.password1 }}
+                </div>
+                <div class="form-group">
+                    <label for="{{ form.password2.id_for_label }}">Confirm Password</label>
+                    {{ form.password2 }}
+                </div>
+                <div class="form-group">
+                    <label for="{{ form.role.id_for_label }}">Role</label>
+                    {{ form.role }}
+                </div>
                 <button type="submit" class="btn btn-primary btn-block">Register</button>
             </form>
             <div class="text-center mt-3">
@@ -79,7 +94,6 @@
             </div>
         </div>
     </div>
-
     <!-- Scripts -->
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js"></script>

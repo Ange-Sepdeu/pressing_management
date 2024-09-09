@@ -1,0 +1,187 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>About Us - PressPro Pressing Manager</title>
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+
+    <!-- Font Awesome CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="{% static 'css/about_new.css' %}">
+
+
+</head>
+<body>
+
+    <!-- Dashboard Header -->
+    <div class="dashboard">
+        <div class="dashboard-nav">
+            <header>
+                <a href="{% url 'pressing_manager' %}" class="brand-logo animate__animated animate__fadeInLeft">
+                    <i class="fas fa-tshirt"></i> 
+                    <span>PressPro Manager Dashboard</span>
+                </a>
+                <div class="profile-avatar">
+                    {% if user.profile_picture %}
+                        <img src="{{ user.profile_picture.url }}" alt="{{ user.username }}'s Avatar" class="img-fluid">
+                    {% else %}
+                        <img src="{% static 'image/auth.jpeg' %}" alt="Default Avatar" class="img-fluid">
+                    {% endif %}
+                </div>
+            </header>
+            <nav class="dashboard-nav-list">
+                <a href="{% url 'pressing_manager' %}" class="dashboard-nav-item active"><i class="fas fa-tachometer-alt"></i> Dashboard</a>
+                <a href="" class="dashboard-nav-item"><i class="fas fa-users-cog"></i> Apply Portfolio</a>
+                <a href="{% url 'chat' %}" class="dashboard-nav-item"><i class="fas fa-comments"></i> Chat with Delivery Team</a>
+                <a href="#" class="dashboard-nav-item"><i class="fas fa-tasks"></i> Manage Orders</a>
+                <a href="#" class="dashboard-nav-item"><i class="fas fa-map-marked-alt"></i> Track Deliveries</a>
+                <a href="{% url 'customer_feedback' %}" class="dashboard-nav-item"><i class="fas fa-thumbs-up"></i> Customer Feedback</a>
+                <a href="#" class="dashboard-nav-item"><i class="fas fa-bell"></i> Notifications</a>
+                <a href="{% url 'setting' %}" class="dashboard-nav-item"><i class="fas fa-cogs"></i> Settings</a>
+                <a href="{% url 'about_us' %}" class="dashboard-nav-item"><i class="fas fa-info-circle"></i> About Us</a>
+            </nav>
+            <a href="{% url 'logout' %}" class="btn btn-primary logout-btn">Logout</a>
+        </div>
+    </div>
+
+    <!-- Header -->
+    <header class="bg-dark text-white text-center py-5">
+        <div class="container">
+            <h1 class="animate__animated animate__fadeInDown">About PressPro Pressing Manager</h1>
+            <p class="lead animate__animated animate__fadeInUp">Your All-in-One Solution for Managing Your Pressing Business</p>
+        </div>
+    </header>
+
+    <!-- About Section -->
+    <section id="about" class="py-5">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-6 animate__animated animate__fadeInLeft">
+                    <img src="{% static 'image/wash.jpeg' %}" alt="Pressing Service" class="img-fluid rounded">
+                </div>
+                <div class="col-md-6 animate__animated animate__fadeInRight">
+                    <h2>Who We Are</h2>
+                    <p>PressPro Pressing Manager is a comprehensive platform designed to streamline and enhance the operations of your pressing business. From customer management to delivery tracking, our system covers all aspects of your business to ensure efficiency and customer satisfaction.</p>
+                    <p>We believe in providing powerful tools that are easy to use, helping you focus on what matters most: growing your business and delivering top-notch service to your clients.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section id="features" class="bg-light py-5">
+        <div class="container">
+            <div class="text-center">
+                <h2 class="animate__animated animate__fadeInUp">Our Features</h2>
+                <p class="lead animate__animated animate__fadeInUp">Discover the powerful features that make PressPro your ideal pressing management tool.</p>
+            </div>
+            <div class="row mt-4">
+                <div class="col-md-4 text-center animate__animated animate__fadeInLeft">
+                    <i class="fas fa-tshirt fa-3x mb-3"></i>
+                    <h5>Comprehensive Order Management</h5>
+                    <p>Manage orders efficiently, track progress, and ensure timely deliveries with our integrated order management system.</p>
+                </div>
+                <div class="col-md-4 text-center animate__animated animate__fadeInUp">
+                    <i class="fas fa-users fa-3x mb-3"></i>
+                    <h5>Customer Relationship Management</h5>
+                    <p>Maintain and grow your customer base with tools for communication, feedback collection, and customer history tracking.</p>
+                </div>
+                <div class="col-md-4 text-center animate__animated animate__fadeInRight">
+                    <i class="fas fa-map-marker-alt fa-3x mb-3"></i>
+                    <h5>Delivery and Logistics</h5>
+                    <p>Track your deliveries in real-time, optimize routes, and provide accurate ETAs to your customers.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Our Team Section -->
+    <section id="team" class="py-5">
+        <div class="container">
+            <div class="text-center">
+                <h2 class="animate__animated animate__fadeInUp">Meet Our Team</h2>
+                <p class="lead animate__animated animate__fadeInUp">The dedicated professionals behind PressPro</p>
+            </div>
+            <div class="row mt-4">
+                <div class="col-md-4 text-center animate__animated animate__fadeInLeft">
+                    <img src="{% static 'image/pickup_service.jpeg' %}" alt="Team Member 1" class="img-fluid rounded-circle mb-3">
+                    <h5>John Doe</h5>
+                    <p>CEO & Founder</p>
+                </div>
+                <div class="col-md-4 text-center animate__animated animate__fadeInUp">
+                    <img src="{% static 'image/pickup_service.jpeg' %}" alt="Team Member 2" class="img-fluid rounded-circle mb-3">
+                    <h5>Jane Smith</h5>
+                    <p>Chief Operating Officer</p>
+                </div>
+                <div class="col-md-4 text-center animate__animated animate__fadeInRight">
+                    <img src="{% static 'image/wash.jpeg' %}" alt="Team Member 3" class="img-fluid rounded-circle mb-3">
+                    <h5>Mark Johnson</h5>
+                    <p>Lead Developer</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="contact" class="bg-dark text-white py-5">
+        <div class="container">
+            <div class="text-center">
+                <h2 class="animate__animated animate__fadeInUp">Get in Touch</h2>
+                <p class="lead animate__animated animate__fadeInUp">We'd love to hear from you</p>
+            </div>
+            <div class="row mt-4">
+                <div class="col-md-6 animate__animated animate__fadeInLeft">
+                    <h5><i class="fas fa-phone-alt"></i> Call Us</h5>
+                    <p>+1 234 567 890</p>
+                </div>
+                <div class="col-md-6 animate__animated animate__fadeInRight">
+                    <h5><i class="fas fa-envelope"></i> Email Us</h5>
+                    <p>info@presspro.com</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="text-center py-4">
+        <div class="container">
+            <p>&copy; 2024 PressPro Pressing Manager. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <!-- Bootstrap JS and dependencies -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+    <!-- Custom JS for Animation -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"></script>
+    <script>
+        $(document).ready(function() {
+            // Add scroll-based animations
+            $(window).on('scroll', function() {
+                $('.animate__animated').each(function() {
+                    if ($(this).isInViewport()) {
+                        $(this).addClass('animate__fadeIn');
+                    }
+                });
+            });
+        });
+
+        $.fn.isInViewport = function() {
+            var elementTop = $(this).offset().top;
+            var elementBottom = elementTop + $(this).outerHeight();
+            var viewportTop = $(window).scrollTop();
+            var viewportBottom = viewportTop + $(window).height();
+            return elementBottom > viewportTop && elementTop < viewportBottom;
+        };
+    </script>
+</body>
+</html>

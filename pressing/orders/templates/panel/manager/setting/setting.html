@@ -1,0 +1,121 @@
+{% load static %}
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Settings</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <link rel="stylesheet" href="{% static 'css/setting.css' %}">
+
+</head>
+<body>
+
+    <header>
+        <div class="dashboard">
+            <div class="dashboard-nav">
+                <header>
+                    <a href="{% url 'pressing_manager' %}" class="brand-logo animate__animated animate__fadeInLeft">
+                        <i class="fas fa-tshirt"></i> 
+                        <span>PressPro Manager Dashboard</span>
+                    </a>
+                    <div class="profile-avatar">
+                        {% if user.profile_picture %}
+                            <img src="{{ user.profile_picture.url }}" alt="{{ user.username }}'s Avatar" class="img-fluid">
+                        {% else %}
+                            <img src="{% static 'image/auth.jpeg' %}" alt="Default Avatar" class="img-fluid">
+                        {% endif %}
+                    </div>
+                </header>
+                <nav class="dashboard-nav-list">
+                    <a href="{% url 'pressing_manager' %}" class="dashboard-nav-item active"><i class="fas fa-tachometer-alt"></i> Dashboard</a>
+                    <a href="" class="dashboard-nav-item"><i class="fas fa-users-cog"></i> Apply Portfolio</a>
+                    <a href="{% url 'chat' %}" class="dashboard-nav-item"><i class="fas fa-comments"></i> Chat with Delivery Team</a>
+                    <a href="#" class="dashboard-nav-item"><i class="fas fa-tasks"></i> Manage Orders</a>
+                    <a href="#" class="dashboard-nav-item"><i class="fas fa-map-marked-alt"></i> Track Deliveries</a>
+                    <a href="{% url 'customer_feedback' %}" class="dashboard-nav-item"><i class="fas fa-thumbs-up"></i> Customer Feedback</a>
+                    <a href="#" class="dashboard-nav-item"><i class="fas fa-bell"></i> Notifications</a>
+                    <a href="{% url 'setting' %}" class="dashboard-nav-item"><i class="fas fa-cogs"></i> Settings</a>
+                    <a href="{% url 'about_us' %}" class="dashboard-nav-item"><i class="fas fa-info-circle"></i> About Us</a>
+                </nav>
+                <a href="{% url 'logout' %}" class="btn btn-primary logout-btn">Logout</a>
+            </div>
+    </header>
+
+    <div class="container">
+        <!-- Profile Photo Section -->
+        <div class="profile-photo">
+            <img src="{% if user.profile_picture %}{{ user.profile_picture.url }}{% else %}https://via.placeholder.com/150{% endif %}" alt="Profile Photo">
+            <form method="post" enctype="multipart/form-data">
+                {% csrf_token %}
+                <input type="file" id="profilePhoto" name="profile_picture" accept="image/*">
+                <label for="profilePhoto">Change Profile Photo</label>
+                <button type="submit" class="btn btn-primary mt-2">Update Photo</button>
+            </form>
+        </div>
+
+        <!-- User Info Form -->
+        <div class="form-section">
+            <h2>Personal Information</h2>
+            <form method="post">
+                {% csrf_token %}
+                <div class="mb-3">
+                    <label for="username" class="form-label">Username</label>
+                    <input type="text" class="form-control" id="username" name="username" value="{{ user.username }}" required>
+                </div>
+                <div class="mb-3">
+                    <label for="email" class="form-label">Email</label>
+                    <input type="email" class="form-control" id="email" name="email" value="{{ user.email }}" required>
+                </div>
+                <div class="mb-3">
+                    <label for="role" class="form-label">Role</label>
+                    <select class="form-select" id="role" name="role" disabled>
+                        <option value="{{ user.role }}" selected>{{ user.get_role_display }}</option>
+                    </select>
+                </div>
+                <button type="submit" class="btn btn-primary">Update Information</button>
+            </form>
+        </div>
+
+        <!-- Password Update Form -->
+        <div class="form-section">
+            <h2>Change Password</h2>
+            <form method="post" action="">
+                {% csrf_token %}
+                <div class="mb-3">
+                    <label for="old_password" class="form-label">Current Password</label>
+                    <input type="password" class="form-control" id="old_password" name="old_password" required>
+                </div>
+                <div class="mb-3">
+                    <label for="new_password1" class="form-label">New Password</label>
+                    <input type="password" class="form-control" id="new_password1" name="new_password1" required>
+                </div>
+                <div class="mb-3">
+                    <label for="new_password2" class="form-label">Confirm New Password</label>
+                    <input type="password" class="form-control" id="new_password2" name="new_password2" required>
+                </div>
+                <button type="submit" class="btn btn-primary">Update Password</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- Custom JS -->
+    <script>
+        // JavaScript for profile photo preview
+        document.getElementById('profilePhoto').addEventListener('change', function (event) {
+            const reader = new FileReader();
+            reader.onload = function () {
+                const img = document.querySelector('.profile-photo img');
+                img.src = reader.result;
+            }
+            reader.readAsDataURL(event.target.files[0]);
+        });
+    </script>
+</body>
+</html>

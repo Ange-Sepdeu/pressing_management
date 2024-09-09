@@ -10,6 +10,8 @@ class Command(BaseCommand):
         users = [
             {'username': 'admin', 'password': 'admin123', 'email': 'admin@gmail.com', 'role': 'admin', 'is_superuser': True, 'is_staff': True},
             {'username': 'deliver', 'password': 'del123', 'email': 'deliver@gmail.com', 'role': 'deliver'},
+            {'username': 'client', 'password': 'client123', 'email': 'client@gmail.com', 'role': 'client'},
+            {'username': 'pressing_manager', 'password': 'press123', 'email': 'pressing_manager@gmail.com', 'role': 'pressing_manager'},
         ]
 
         for user_data in users:
@@ -25,3 +27,5 @@ class Command(BaseCommand):
                 else:
                     User.objects.create_user(**user_data)
                     self.stdout.write(self.style.SUCCESS(f"User '{user_data['username']}' created successfully"))
+            else:
+                self.stdout.write(self.style.WARNING(f"User '{user_data['username']}' already exists"))

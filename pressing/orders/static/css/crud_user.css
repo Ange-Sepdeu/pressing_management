@@ -1,0 +1,122 @@
+/* user_management.css */
+
+/* General Styles */
+body {
+    font-family: 'Arial', sans-serif;
+    background-color: #f8f9fa;
+    margin: 0;
+    padding: 0;
+}
+
+.dashboard {
+    display: flex;
+}
+
+.dashboard-nav {
+    width: 250px;
+    background-color: #343a40;
+    color: #ffffff;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.dashboard-nav header {
+    padding: 20px;
+    text-align: center;
+    background-color: #212529;
+}
+
+.brand-logo {
+    font-size: 1.5em;
+    font-weight: bold;
+    color: #ffffff;
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.dashboard-nav-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    flex-grow: 1;
+}
+
+.dashboard-nav-item {
+    padding: 15px 20px;
+    color: #ffffff;
+    display: block;
+    text-decoration: none;
+    transition: background-color 0.3s;
+}
+
+.dashboard-nav-item:hover,
+.dashboard-nav-item.active {
+    background-color: #495057;
+}
+
+.logout-btn {
+    margin: 20px;
+    background-color: #e74c3c;
+    border: none;
+    color: white;
+    padding: 10px;
+    text-align: center;
+    text-decoration: none;
+    display: block;
+    border-radius: 5px;
+    transition: background-color 0.3s;
+}
+
+.logout-btn:hover {
+    background-color: #c0392b;
+}
+
+.dashboard-app {
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+.dashboard-toolbar {
+    padding: 15px;
+    background-color: #ffffff;
+    border-bottom: 1px solid #dee2e6;
+    display: flex;
+    align-items: center;
+}
+
+.menu-toggle {
+    background: none;
+    border: none;
+    color: #343a40;
+    font-size: 1.5em;
+    margin-right: 15px;
+}
+
+.dashboard-content {
+    padding: 20px;
+    background-color: #f8f9fa;
+    flex-grow: 1;
+}
+
+.card {
+    border-radius: 5px;
+}
+
+.card-header {
+    background-color: #343a40;
+    color: white;
+    padding: 10px;
+}
+
+.card-body {
+    padding: 20px;
+}
+
+.btn {
+    margin-top: 10px;
+}

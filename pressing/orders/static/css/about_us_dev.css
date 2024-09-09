@@ -1,0 +1,34 @@
+body {
+    font-family: 'Arial', sans-serif;
+    background-color: #f8f9fa;
+}
+
+.card-header h3 {
+    font-weight: bold;
+}
+
+.card-body p, .card-body ul {
+    font-size: 1.1em;
+    color: #333;
+}
+
+.card img {
+    transition: transform 0.3s;
+}
+
+.card img:hover {
+    transform: scale(1.05);
+}
+
+.card h5 {
+    font-weight: bold;
+    margin-top: 10px;
+}
+
+.rounded-circle {
+    border: 3px solid #ddd;
+}
+
+footer {
+    margin-top: 50px;
+}

@@ -1,0 +1,328 @@
+/* Global Styles */
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    line-height: 1.6;
+    color: #333;
+    background-color: #f9f9f9;
+}
+
+a {
+    text-decoration: none;
+    color: #337ab7;
+}
+
+a:hover {
+    color: #23527c;
+}
+
+/* Dashboard Header Styles */
+
+.dashboard {
+    background-color: #333;
+    color: #fff;
+    padding: 1rem;
+    text-align: center;
+}
+
+.dashboard-nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.dashboard-nav-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+}
+
+.dashboard-nav-item {
+    margin-right: 20px;
+    color: #fff;
+    transition: color 0.2s ease;
+}
+
+.dashboard-nav-item:hover {
+    color: #ccc;
+}
+
+.dashboard-nav-item.active {
+    color: #fff;
+    font-weight: bold;
+}
+
+.brand-logo {
+    font-size: 1.5rem;
+    font-weight: bold;
+    margin-right: 10px;
+}
+
+.profile-avatar {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    overflow: hidden;
+    margin-left: 10px;
+}
+
+.profile-avatar img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.logout-btn {
+    background-color: #337ab7;
+    color: #fff;
+    border: none;
+    padding: 10px 20px;
+    font-size: 1rem;
+    cursor: pointer;
+}
+
+.logout-btn:hover {
+    background-color: #23527c;
+}
+
+/* Header Styles */
+
+header {
+    background-color: #333;
+    color: #fff;
+    padding: 1rem;
+    text-align: center;
+}
+
+header h1 {
+    font-size: 2rem;
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+
+header p {
+    font-size: 1.2rem;
+    margin-bottom: 20px;
+}
+
+/* About Section Styles */
+
+#about {
+    background-color: #f9f9f9;
+    padding: 2rem;
+}
+
+#about h2 {
+    font-size: 1.8rem;
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+
+#about p {
+    font-size: 1.2rem;
+    margin-bottom: 20px;
+}
+
+#about img {
+    width: 100%;
+    height: 200px;
+    object-fit: cover;
+    border-radius: 10px;
+}
+
+/* Features Section Styles */
+
+#features {
+    background-color: #fff;
+    padding: 2rem;
+}
+
+#features h2 {
+    font-size: 1.8rem;
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+
+#features p {
+    font-size: 1.2rem;
+    margin-bottom: 20px;
+}
+
+.feature-item {
+    margin-bottom: 20px;
+}
+
+.feature-item i {
+    font-size: 2rem;
+    margin-bottom: 10px;
+}
+
+.feature-item h5 {
+    font-size: 1.2rem;
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+
+/* Our Team Section Styles */
+
+#team {
+    background-color: #f9f9f9;
+    padding: 2rem;
+}
+
+#team h2 {
+    font-size: 1.8rem;
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+
+#team p {
+    font-size: 1.2rem;
+    margin-bottom: 20px;
+}
+
+.team-member {
+    margin-bottom: 20px;
+}
+
+.team-member img {
+    width: 100%;
+    height: 200px;
+    object-fit: cover;
+    border-radius: 10px;
+}
+
+.team-member h5 {
+    font-size: 1.2rem;
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+
+/* Contact Section Styles */
+
+#contact {
+    background-color: #333;
+    color: #fff;
+    padding: 2rem;
+}
+
+#contact h2 {
+    font-size: 1.8rem;
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+
+#contact p {
+    font-size: 1.2rem;
+    margin-bottom: 20px;
+}
+
+.contact-info {
+    margin-bottom: 20px;
+}
+
+.contact-info h5 {
+    font-size: 1.2rem;
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+
+/* Footer Styles */
+
+footer {
+    background-color: #333;
+    color: #fff;
+    padding: 1rem;
+    text-align: center;
+    clear: both;
+}
+
+footer p {
+    font-size: 1rem;
+    margin-bottom: 10px;
+}
+
+/* Animation Styles */
+
+.animate__animated {
+    animation-duration: 1s;
+}
+
+.animate__fadeIn {
+    animation-name: fadeIn;
+}
+
+.animate__fadeInLeft {
+    animation-name: fadeInLeft;
+}
+
+.animate__fadeInRight {
+    animation-name: fadeInRight;
+}
+
+.animate__fadeInUp {
+    animation-name: fadeInUp;
+}
+
+.animate__fadeInDown {
+    animation-name: fadeInDown;
+}
+
+/* Responsive Styles */
+
+@media (max-width: 768px) {
+    .dashboard-nav {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .dashboard-nav-list {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .dashboard-nav-item {
+        margin-bottom: 10px;
+    }
+
+    #about img {
+        height: 150px;
+    }
+
+    .feature-item {
+        margin-bottom: 10px;
+    }
+
+    .team-member img {
+        height: 150px;
+    }
+}
+
+@media (max-width: 480px) {
+    .dashboard-nav {
+        padding: 10px;
+    }
+
+    .dashboard-nav-list {
+        padding: 10px;
+    }
+
+    #about img {
+        height: 100px;
+    }
+
+    .feature-item {
+        margin-bottom: 5px;
+    }
+
+    .team-member img {
+        height: 100px;
+    }
+}

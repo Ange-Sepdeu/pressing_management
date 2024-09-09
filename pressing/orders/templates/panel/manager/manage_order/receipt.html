@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+        }
+        .receipt {
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 20px;
+            border: 1px solid #ccc;
+            border-radius: 10px;
+        }
+        .receipt h2 {
+            text-align: center;
+        }
+        .receipt table {
+            width: 100%;
+            margin-top: 20px;
+            border-collapse: collapse;
+        }
+        .receipt table, .receipt th, .receipt td {
+            border: 1px solid #ddd;
+        }
+        .receipt th, .receipt td {
+            padding: 10px;
+            text-align: left;
+        }
+        .receipt-footer {
+            text-align: right;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="receipt">
+        <h2>Payment Receipt</h2>
+        <p>Receipt ID: {{ receipt.id }}</p>
+        <table>
+            <tr>
+                <th>Description</th>
+                <th>Quantity</th>
+                <th>Price (FCFA)</th>
+                <th>Total (FCFA)</th>
+            </tr>
+            {% for item in receipt.cart_items %}
+            <tr>
+                <td>{{ item.description }}</td>
+                <td>{{ item.quantity }}</td>
+                <td>{{ item.price }}</td>
+                <td>{{ item.quantity|multiply:item.price }}</td>
+            </tr>
+            {% endfor %}
+            <tr>
+                <td colspan="3" style="text-align: right;"><strong>Total Amount:</strong></td>
+                <td><strong>{{ receipt.total }}</strong></td>
+            </tr>
+            </table>
+            <div class="receipt-footer">
+                <p>Thank you for your purchase!</p>
+            </div>
+        </div>
+    </body>
+    </html>
+    

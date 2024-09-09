@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Deliver Panel</title>
+    <title>Pressing Manager</title>
 
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
@@ -15,9 +15,11 @@
     <!-- Custom CSS -->
     <link rel="stylesheet" href="{% static 'css/deliver.css' %}">
 
+    <!-- Animation CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
+
     <!-- Google Maps API -->
     <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAOVYRIgupAurZup5y1PRh8Ismb1A3lLao&libraries=places&callback=initMap"></script>
-
 
     <style>
         /* Add custom styles for the map */
@@ -26,24 +28,119 @@
             width: 100%;
             margin-top: 20px;
         }
+        /* Custom styles for the dashboard */
+        .dashboard {
+            display: flex;
+            min-height: 100vh;
+            overflow: hidden;
+        }
+        .dashboard-nav {
+            width: 250px;
+            background-color: #343a40;
+            color: white;
+            padding: 15px;
+        }
+        .dashboard-nav .brand-logo {
+            display: flex;
+            align-items: center;
+            font-size: 1.5rem;
+            font-weight: bold;
+            margin-bottom: 20px;
+        }
+        .dashboard-nav .brand-logo i {
+            margin-right: 10px;
+        }
+        .dashboard-nav .dashboard-nav-list a {
+            display: block;
+            padding: 10px;
+            color: white;
+            text-decoration: none;
+            margin-bottom: 10px;
+            transition: background-color 0.3s;
+        }
+        .dashboard-nav .dashboard-nav-list a:hover, .dashboard-nav .dashboard-nav-list a.active {
+            background-color: #495057;
+        }
+        .dashboard-toolbar {
+            background-color: #495057;
+            padding: 15px;
+            color: white;
+        }
+        .dashboard-content {
+            flex-grow: 1;
+            padding: 20px;
+        }
+
+        header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 15px;
+    background-color: #343a40;
+    color: white;
+}
+
+header .brand-logo {
+    display: flex;
+    align-items: center;
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: white;
+    text-decoration: none;
+}
+
+header .brand-logo i {
+    margin-right: 10px;
+    color: #ffc107;
+}
+
+header .profile-avatar {
+    display: flex;
+    align-items: center;
+    border: 2px solid #ffc107;
+    border-radius: 50%;
+    overflow: hidden;
+    width: 50px;
+    height: 50px;
+    background-color: #495057;
+    position: relative;
+}
+
+header .profile-avatar img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 50%;
+}
+
     </style>
 </head>
 <body>
     <div class="dashboard">
         <div class="dashboard-nav">
             <header>
-                <a href="#" class="brand-logo"><i class="fas fa-id-card"></i> <span>Deliver Panel</span></a>
+                <a href="{% url 'pressing_manager' %}" class="brand-logo animate__animated animate__fadeInLeft">
+                    <i class="fas fa-tshirt"></i> 
+                    <span>PressPro  Manager Dashboard</span>
+                </a>
+                <div class="profile-avatar">
+                    {% if user.profile_picture %}
+                        <img src="{{ user.profile_picture.url }}" alt="{{ user.username }}'s Avatar" class="img-fluid">
+                    {% else %}
+                        <img src="{% static 'image/auth.jpeg' %}" alt="Default Avatar" class="img-fluid">
+                    {% endif %}
+                </div>
             </header>
             <nav class="dashboard-nav-list">
-                <a href="{% url 'deliver_panel' %}" class="dashboard-nav-item active"><i class="fas fa-tachometer-alt"></i> Dashboard</a>
-                <a href="{% url 'manage_deliver' %}" class="dashboard-nav-item"><i class="fas fa-users-cog"></i> Manage Deliver</a>
-                <a href="#" class="dashboard-nav-item"><i class="fas fa-calendar-alt"></i> Chat with Admin</a>
-                <a href="#" class="dashboard-nav-item"><i class="fas fa-calendar-alt"></i> Geolocation Tracking</a>
-                <a href="#" class="dashboard-nav-item"><i class="fas fa-calendar-alt"></i> Integration with Mapping Services</a>
-                <a href="#" class="dashboard-nav-item"><i class="fas fa-calendar-alt"></i> Proof of Delivery</a>
-                <a href="#" class="dashboard-nav-item"><i class="fas fa-calendar-alt"></i> Notification</a>
-                <a href="#" class="dashboard-nav-item"><i class="fas fa-cogs"></i> Settings</a>
-                <a href="#" class="dashboard-nav-item"><i class="fas fa-info-circle"></i> About Us</a>
+                <a href="{% url 'pressing_manager' %}" class="dashboard-nav-item active"><i class="fas fa-tachometer-alt"></i> Dashboard</a>
+                <a href="{% url 'apply_portfolio' %}" class="dashboard-nav-item"><i class="fas fa-users-cog"></i> Apply Portfolio</a>
+                <a href="{% url 'chat' %}" class="dashboard-nav-item"><i class="fas fa-comments"></i> Chat with Delivery Team</a>
+                <a href="#" class="dashboard-nav-item"><i class="fas fa-tasks"></i> Manage Orders</a>
+                <a href="#" class="dashboard-nav-item"><i class="fas fa-map-marked-alt"></i> Track Deliveries</a>
+                <a href="{% url 'customer_feedback' %}" class="dashboard-nav-item"><i class="fas fa-thumbs-up"></i> Customer Feedback</a>
+                <a href="#" class="dashboard-nav-item"><i class="fas fa-bell"></i> Notifications</a>
+                <a href="{% url 'setting' %}" class="dashboard-nav-item"><i class="fas fa-cogs"></i> Settings</a>
+                <a href="{% url 'about_us' %}" class="dashboard-nav-item"><i class="fas fa-info-circle"></i> About Us</a>
             </nav>
             <a href="{% url 'logout' %}" class="btn btn-primary logout-btn">Logout</a>
         </div>
@@ -53,14 +150,47 @@
             </header>
             <div class="dashboard-content">
                 <div class="container">
-                    <h1 class="mt-4">Welcome to the National ID Admin Panel - Deliver Panel</h1>
-                    <p>Manage all aspects of National ID card delivery, from order management to delivery tracking.</p>
+                    <h1 class="mt-4 animate__animated animate__fadeInLeft">Welcome to the Pressing Manager Dashboard</h1>
+                    <p class="animate__animated animate__fadeInRight">Manage all aspects of your pressing business, from order management to delivery tracking.</p>
 
+                    <!-- Pressing Manager Specific Content -->
+                    <section class="mt-5">
+                        <h2>Pressing Orders Overview</h2>
+                        <div class="row">
+                            <div class="col-md-4">
+                                <div class="card">
+                                    <div class="card-body text-center">
+                                        <i class="fas fa-box fa-3x mb-3"></i>
+                                        <h5 class="card-title">Pending Orders</h5>
+                                        <p class="card-text">Review and manage all pending orders.</p>
+                                        <a href="#" class="btn btn-primary">View Details</a>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="card">
+                                    <div class="card-body text-center">
+                                        <i class="fas fa-check-circle fa-3x mb-3"></i>
+                                        <h5 class="card-title">Completed Orders</h5>
+                                        <p class="card-text">Track and archive completed orders.</p>
+                                        <a href="#" class="btn btn-success">View Details</a>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="card">
+                                    <div class="card-body text-center">
+                                        <i class="fas fa-truck fa-3x mb-3"></i>
+                                        <h5 class="card-title">Deliveries in Progress</h5>
+                                        <p class="card-text">Monitor the status of ongoing deliveries.</p>
+                                        <a href="#" class="btn btn-info">Track Deliveries</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
 
-
-
-
-                    <!-- Additional Sections -->
+                    <!-- Additional Features for Pressing Manager -->
                     <section class="additional-features mt-5">
                         <h2>Additional Features</h2>
                         <div class="row">
@@ -83,7 +213,7 @@
                         </div>
                     </section>
 
-                                    <!-- Geolocation Section -->
+                    <!-- Geolocation Section -->
                     <section class="geolocation mt-5">
                         <h2>Geolocation</h2>
                         <button class="btn btn-primary" id="get-location">Get My Location</button>
@@ -93,9 +223,8 @@
 
                     <!-- Footer -->
                     <footer class="mt-5 text-center">
-                        <p>&copy; 2024 National ID Admin Panel. All rights reserved.</p>
+                        <p>&copy; 2024 Pressing Manager. All rights reserved.</p>
                     </footer>
-
                 </div>
             </div>
         </main>
@@ -107,53 +236,52 @@
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 
     <!-- Custom JS -->
- <script>
-    let map;
+    <script>
+        let map;
 
-    document.getElementById('get-location').addEventListener('click', function() {
-        if (navigator.geolocation) {
-            navigator.geolocation.getCurrentPosition(showPosition, showError);
-        } else {
-            document.getElementById('location-output').innerText = "Geolocation is not supported by this browser.";
-        }
-    });
-
-    function showPosition(position) {
-        const lat = position.coords.latitude;
-        const lon = position.coords.longitude;
-        document.getElementById('location-output').innerText = "Latitude: " + lat + ", Longitude: " + lon;
-
-        // Initialize the map
-        map = new google.maps.Map(document.getElementById('map'), {
-            center: { lat: lat, lng: lon },
-            zoom: 15
+        document.getElementById('get-location').addEventListener('click', function() {
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(showPosition, showError);
+            } else {
+                document.getElementById('location-output').innerText = "Geolocation is not supported by this browser.";
+            }
         });
 
-        // Add a marker at the user's location
-        const marker = new google.maps.Marker({
-            position: { lat: lat, lng: lon },
-            map: map,
-            title: 'You are here'
-        });
-    }
+        function showPosition(position) {
+            const lat = position.coords.latitude;
+            const lon = position.coords.longitude;
+            document.getElementById('location-output').innerText = "Latitude: " + lat + ", Longitude: " + lon;
 
-    function showError(error) {
-        switch(error.code) {
-            case error.PERMISSION_DENIED:
-                document.getElementById('location-output').innerText = "User denied the request for Geolocation.";
-                break;
-            case error.POSITION_UNAVAILABLE:
-                document.getElementById('location-output').innerText = "Location information is unavailable.";
-                break;
-            case error.TIMEOUT:
-                document.getElementById('location-output').innerText = "The request to get user location timed out.";
-                break;
-            case error.UNKNOWN_ERROR:
-                document.getElementById('location-output').innerText = "An unknown error occurred.";
-                break;
+            // Initialize the map
+            map = new google.maps.Map(document.getElementById('map'), {
+                center: { lat: lat, lng: lon },
+                zoom: 15
+            });
+
+            // Add a marker at the current location
+            new google.maps.Marker({
+                position: { lat: lat, lng: lon },
+                map: map,
+                title: "You are here!"
+            });
         }
-    }
-</script>
 
+        function showError(error) {
+            switch (error.code) {
+                case error.PERMISSION_DENIED:
+                    document.getElementById('location-output').innerText = "User denied the request for Geolocation.";
+                    break;
+                case error.POSITION_UNAVAILABLE:
+                    document.getElementById('location-output').innerText = "Location information is unavailable.";
+                    break;
+                case error.TIMEOUT:
+                    document.getElementById('location-output').innerText = "The request to get user location timed out.";
+                    break;
+                case error.UNKNOWN_ERROR:
+                    document.getElementById('location-output').innerText = "An unknown error occurred.";
+                    break;
+            }
+        }
+    </script>
 </body>
 </html>

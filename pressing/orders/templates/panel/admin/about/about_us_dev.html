@@ -1,6 +1,5 @@
 {% load static %}
 
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -9,7 +8,7 @@
     <title>About Us - Dev Team</title>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <link rel="stylesheet" href="{% static 'css/about_us_dev.css' %}">
-    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
     <script src="https://kit.fontawesome.com/a076d05399.js"></script>
 </head>
 <body>
@@ -18,13 +17,13 @@
             <header>
                 <a href="{% url 'admin_panel' %}" class="brand-logo animate__animated animate__fadeInLeft">
                     <i class="fas fa-tshirt"></i> 
-                    <span>PressPro admin Dashboard</span>
+                    <span>PressPro Admin Dashboard</span>
                 </a>
                 <div class="profile-avatar">
                     {% if user.profile_picture %}
-                        <img src="{{ user.profile_picture.url }}" alt="{{ user.username }}'s Avatar" class="img-fluid">
+                        <img src="{{ user.profile_picture.url }}" alt="{{ user.username }}'s Avatar" class="img-fluid rounded-circle">
                     {% else %}
-                        <img src="{% static 'image/auth.jpeg' %}" alt="Default Avatar" class="img-fluid">
+                        <img src="{% static 'image/auth.jpeg' %}" alt="Default Avatar" class="img-fluid rounded-circle">
                     {% endif %}
                 </div>
             </header>
@@ -38,135 +37,131 @@
                 <a href="#" class="dashboard-nav-item"><i class="fas fa-handshake"></i> Partner Management</a>
                 <a href="#" class="dashboard-nav-item"><i class="fas fa-bullhorn"></i> Marketing & Promotions</a>
                 <a href="#" class="dashboard-nav-item"><i class="fas fa-cogs"></i> Settings</a>
-                <a href="{% url 'about_us_dev' %}" class="dashboard-nav-item"><i class="fas fa-info-circle"></i> About Us Dev</a>
+                <a href="{% url 'about_us_dev' %}" class="dashboard-nav-item active"><i class="fas fa-info-circle"></i> About Us Dev</a>
             </nav>
             <a href="{% url 'logout' %}" class="btn btn-primary logout-btn">Logout</a>
         </div>
-    <div class="container my-5">
-        <div class="text-center mb-5">
-            <h1 class="display-4">About Us - Dev Team</h1>
-            <p class="lead">Meet the team behind the app and learn about our objectives and the benefits of using our application.</p>
+
+        <div class="container my-5 animate__animated animate__fadeInUp">
+            <div class="text-center mb-5">
+                <h1 class="display-4">About Us - Dev Team</h1>
+                <p class="lead">Meet the team behind the app and learn about our objectives and the benefits of using our application.</p>
+            </div>
+
+            <!-- Objectives Section -->
+            <section id="objectives" class="mb-5">
+                <div class="card shadow-lg">
+                    <div class="card-header bg-primary text-white">
+                        <h3><i class="fas fa-bullseye"></i> General Objectives</h3>
+                    </div>
+                    <div class="card-body">
+                        <p>Our main objective is to develop an efficient and user-friendly application that streamlines the process of managing users, appointments, and documents. We aim to deliver high-quality software solutions that improve productivity and user experience.</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Benefits Section -->
+            <section id="benefits" class="mb-5">
+                <div class="card shadow-lg">
+                    <div class="card-header bg-success text-white">
+                        <h3><i class="fas fa-thumbs-up"></i> Benefits of the App</h3>
+                    </div>
+                    <div class="card-body">
+                        <ul class="list-unstyled">
+                            <li class="mb-2"><i class="fas fa-check-circle text-success"></i> Easy-to-use interface with responsive design</li>
+                            <li class="mb-2"><i class="fas fa-check-circle text-success"></i> Efficient management of users, appointments, and documents</li>
+                            <li class="mb-2"><i class="fas fa-check-circle text-success"></i> Secure data handling and user authentication</li>
+                            <li class="mb-2"><i class="fas fa-check-circle text-success"></i> Real-time collaboration and communication tools</li>
+                        </ul>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Portfolio Section -->
+            <section id="portfolio" class="mb-5">
+                <div class="card shadow-lg">
+                    <div class="card-header bg-info text-white">
+                        <h3><i class="fas fa-briefcase"></i> Our Portfolio</h3>
+                    </div>
+                    <div class="card-body">
+                        <div class="row">
+                            <!-- Portfolio Item 1 -->
+                            <div class="col-md-4 mb-4">
+                                <div class="card h-100">
+                                    <img src="{% static 'image/auth.png' %}" class="card-img-top" alt="Project 1">
+                                    <div class="card-body">
+                                        <h5 class="card-title">Project 1</h5>
+                                        <p class="card-text">A brief description of Project 1, highlighting key features and technologies used.</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- Portfolio Item 2 -->
+                            <div class="col-md-4 mb-4">
+                                <div class="card h-100">
+                                    <img src="{% static 'image/auth.jpeg' %}" class="card-img-top" alt="Project 2">
+                                    <div class="card-body">
+                                        <h5 class="card-title">Project 2</h5>
+                                        <p class="card-text">A brief description of Project 2, highlighting key features and technologies used.</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- Portfolio Item 3 -->
+                            <div class="col-md-4 mb-4">
+                                <div class="card h-100">
+                                    <img src="{% static 'image/auth.jpeg' %}" class="card-img-top" alt="Project 3">
+                                    <div class="card-body">
+                                        <h5 class="card-title">Project 3</h5>
+                                        <p class="card-text">A brief description of Project 3, highlighting key features and technologies used.</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Team Section -->
+            <section id="team" class="mb-5">
+                <div class="card shadow-lg">
+                    <div class="card-header bg-warning text-white">
+                        <h3><i class="fas fa-users"></i> Meet the Dev Team</h3>
+                    </div>
+                    <div class="card-body">
+                        <div class="row">
+                            <!-- Team Member 1 -->
+                            <div class="col-md-4 text-center">
+                                <img src="{% static 'image/wash.jpeg' %}" class="rounded-circle mb-3" alt="Dev 1" width="150" height="150">
+                                <h5>Dev 1</h5>
+                                <p>Role: Full-Stack Developer</p>
+                            </div>
+                            <!-- Team Member 2 -->
+                            <div class="col-md-4 text-center">
+                                <img src="{% static 'image/pickup_service.jpeg' %}" class="rounded-circle mb-3" alt="Dev 2" width="150" height="150">
+                                <h5>Dev 2</h5>
+                                <p>Role: Front-End Developer</p>
+                            </div>
+                            <!-- Team Member 3 -->
+                            <div class="col-md-4 text-center">
+                                <img src="{% static 'image/wash.jpeg' %}" class="rounded-circle mb-3" alt="Dev 3" width="150" height="150">
+                                <h5>Dev 3</h5>
+                                <p>Role: Back-End Developer</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
         </div>
 
-        <!-- Objectives Section -->
-        <section id="objectives" class="mb-5">
-            <div class="card shadow-lg">
-                <div class="card-header bg-primary text-white">
-                    <h3><i class="fas fa-bullseye"></i> General Objectives</h3>
-                </div>
-                <div class="card-body">
-                    <p>Our main objective is to develop an efficient and user-friendly application that streamlines the process of managing users, appointments, and documents. We aim to deliver high-quality software solutions that improve productivity and user experience.</p>
-                </div>
-            </div>
-        </section>
-
-        <!-- Benefits Section -->
-        <section id="benefits" class="mb-5">
-            <div class="card shadow-lg">
-                <div class="card-header bg-success text-white">
-                    <h3><i class="fas fa-thumbs-up"></i> Benefits of the App</h3>
-                </div>
-                <div class="card-body">
-                    <ul class="list-unstyled">
-                        <li><i class="fas fa-check-circle"></i> Easy-to-use interface with responsive design</li>
-                        <li><i class="fas fa-check-circle"></i> Efficient management of users, appointments, and documents</li>
-                        <li><i class="fas fa-check-circle"></i> Secure data handling and user authentication</li>
-                        <li><i class="fas fa-check-circle"></i> Real-time collaboration and communication tools</li>
-                    </ul>
-                </div>
-            </div>
-        </section>
-
-        <!-- Portfolio Section -->
-        <section id="portfolio" class="mb-5">
-            <div class="card shadow-lg">
-                <div class="card-header bg-info text-white">
-                    <h3><i class="fas fa-briefcase"></i> Our Portfolio</h3>
-                </div>
-                <div class="card-body">
-                    <div class="row">
-                        <!-- Portfolio Item 1 -->
-                        <div class="col-md-4 mb-4">
-                            <div class="card h-100">
-                                <img src="{% static 'image/auth.png' %}" class="card-img-top" alt="Project 1">
-                                <div class="card-body">
-                                    <h5 class="card-title">Project 1</h5>
-                                    <p class="card-text">A brief description of Project 1, highlighting key features and technologies used.</p>
-                                </div>
-                            </div>
-                        </div>
-                        <!-- Portfolio Item 2 -->
-                        <div class="col-md-4 mb-4">
-                            <div class="card h-100">
-                                <img src="{% static 'image/auth.jpeg' %}" class="card-img-top" alt="Project 2">
-                                <div class="card-body">
-                                    <h5 class="card-title">Project 2</h5>
-                                    <p class="card-text">A brief description of Project 2, highlighting key features and technologies used.</p>
-                                </div>
-                            </div>
-                        </div>
-                        <!-- Portfolio Item 3 -->
-                        <div class="col-md-4 mb-4">
-                            <div class="card h-100">
-                                <img src="{% static 'image/auth.jpeg' %}" class="card-img-top" alt="Project 3">
-                                <div class="card-body">
-                                    <h5 class="card-title">Project 3</h5>
-                                    <p class="card-text">A brief description of Project 3, highlighting key features and technologies used.</p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- Team Section -->
-        <section id="team" class="mb-5">
-            <div class="card shadow-lg">
-                <div class="card-header bg-warning text-white">
-                    <h3><i class="fas fa-users"></i> Meet the Dev Team</h3>
-                </div>
-                <div class="card-body">
-                    <div class="row">
-                        <!-- Team Member 1 -->
-                        <div class="col-md-4 text-center">
-                            <img src="{% static 'image/wash.jpeg' %}" class="rounded-circle mb-3" alt="Dev 1" width="150" height="150">
-                            <h5>Dev 1</h5>
-                            <p>Role: Full-Stack Developer</p>
-                        </div>
-                        <!-- Team Member 2 -->
-                        <div class="col-md-4 text-center">
-                            <img src="{% static 'image/pickup_service.jpeg' %}" class="rounded-circle mb-3" alt="Dev 2" width="150" height="150">
-                            <h5>Dev 2</h5>
-                            <p>Role: Front-End Developer</p>
-                        </div>
-                        <!-- Team Member 3 -->
-                        <div class="col-md-4 text-center">
-                            <img src="{% static 'image/wash.jpeg' %}" class="rounded-circle mb-3" alt="Dev 3" width="150" height="150">
-                            <h5>Dev 3</h5>
-                            <p>Role: Back-End Developer</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
-
+        <!-- Footer -->
+        <footer class="bg-dark text-white text-center py-3">
+            <p>&copy; 2024 Admin Dev Team. All rights reserved.</p>
+        </footer>
     </div>
-
-    <!-- Footer -->
-    <footer class="bg-dark text-white text-center py-3">
-        <p>&copy; 2024 Admin Dev Team. All rights reserved.</p>
-    </footer>
 
     <!-- Scripts -->
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-    <script>
-        // Custom JS for animations or additional interactivity
-        $(document).ready(function(){
-            // Add custom animations if needed
-        });
-    </script>
+    <script src="{% static 'js/about_us_dev.js' %}"></script>
 </body>
 </html>

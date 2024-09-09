@@ -105,7 +105,7 @@ class ContactForm(forms.ModelForm):
             'description': forms.Textarea(attrs={'rows': 4}),
         }
 
-        
+
 
 class ChatMessageForm(forms.ModelForm):
     class Meta:
@@ -114,3 +114,16 @@ class ChatMessageForm(forms.ModelForm):
         widgets = {
             'message': forms.Textarea(attrs={'class': 'form-control', 'rows': 2, 'placeholder': 'Type your message here...'}),
         }
+
+
+from .models import PressingProfile
+
+class PromotionForm(forms.ModelForm):
+    class Meta:
+        model = PressingProfile
+        fields = ['photos', 'videos']
+
+class SocialMediaForm(forms.ModelForm):
+    class Meta:
+        model = PressingProfile
+        fields = ['facebook_url', 'instagram_url', 'tiktok_url', 'youtube_url']

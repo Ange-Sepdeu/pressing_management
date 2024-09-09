@@ -27,6 +27,7 @@ class Contact(models.Model):
         return self.email
 
 
+
 class PressingProfile(models.Model):
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     business_name = models.CharField(max_length=255)
@@ -37,7 +38,11 @@ class PressingProfile(models.Model):
     videos = models.ManyToManyField('Video', blank=True)
     about_us = models.TextField()
     approved = models.BooleanField(default=False)
-    pressing_count = models.IntegerField(default=1)  # New field added here
+    pressing_count = models.IntegerField(default=1)
+    facebook_url = models.URLField(blank=True, null=True)
+    instagram_url = models.URLField(blank=True, null=True)
+    tiktok_url = models.URLField(blank=True, null=True)
+    youtube_url = models.URLField(blank=True, null=True)
 
     def __str__(self):
         return self.business_name
@@ -53,6 +58,9 @@ class Video(models.Model):
     
     def __str__(self):
         return f"Video {self.id}"
+
+
+
 class Receipt(models.Model):
     total = models.DecimalField(max_digits=10, decimal_places=2)
     pdf = models.FileField(upload_to='receipts/')

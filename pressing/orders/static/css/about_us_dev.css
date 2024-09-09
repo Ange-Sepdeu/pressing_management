@@ -1,34 +1,162 @@
+/* General Styles */
 body {
     font-family: 'Arial', sans-serif;
     background-color: #f8f9fa;
+    color: #333;
+    margin: 0;
+    padding: 0;
 }
 
-.card-header h3 {
+.dashboard {
+    display: flex;
+    min-height: 100vh;
+    flex-direction: column;
+}
+
+.dashboard-nav {
+    background-color: #343a40;
+    color: white;
+    width: 240px;
+    padding: 20px;
+    position: fixed;
+    height: 100vh;
+}
+
+.dashboard-nav header {
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+.dashboard-nav header .brand-logo {
+    display: flex;
+    align-items: center;
+    color: white;
+    text-decoration: none;
+    font-size: 1.2rem;
+}
+
+.dashboard-nav header .brand-logo i {
+    margin-right: 10px;
+}
+
+.dashboard-nav .profile-avatar {
+    text-align: center;
+    margin-top: 20px;
+}
+
+.dashboard-nav .profile-avatar img {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+.dashboard-nav-list {
+    list-style: none;
+    padding: 0;
+    margin: 20px 0;
+}
+
+.dashboard-nav-item {
+    display: block;
+    padding: 10px;
+    color: white;
+    text-decoration: none;
+    margin-bottom: 10px;
+    border-radius: 5px;
+    transition: background-color 0.3s ease;
+}
+
+.dashboard-nav-item.active,
+.dashboard-nav-item:hover {
+    background-color: #495057;
+}
+
+.logout-btn {
+    display: block;
+    margin-top: auto;
+    text-align: center;
+    padding: 10px;
+    background-color: #007bff;
+    color: white;
+    text-decoration: none;
+    border-radius: 5px;
+}
+
+.logout-btn:hover {
+    background-color: #0056b3;
+}
+
+/* Content Area */
+.container {
+    margin-left: 260px;
+    padding: 20px;
+}
+
+.container h1 {
+    font-size: 2.5rem;
     font-weight: bold;
 }
 
-.card-body p, .card-body ul {
-    font-size: 1.1em;
-    color: #333;
+.card {
+    margin-bottom: 20px;
+    border: none;
+    border-radius: 10px;
+}
+
+.card-header {
+    border-radius: 10px 10px 0 0;
+    font-size: 1.5rem;
+    font-weight: bold;
+}
+
+.card-body {
+    padding: 20px;
 }
 
 .card img {
-    transition: transform 0.3s;
+    border-radius: 10px 10px 0 0;
 }
 
-.card img:hover {
-    transform: scale(1.05);
+/* Portfolio Section */
+#portfolio .card {
+    text-align: center;
 }
 
-.card h5 {
-    font-weight: bold;
+#portfolio .card img {
+    height: 200px;
+    object-fit: cover;
+    border-bottom: 1px solid #ddd;
+}
+
+/* Team Section */
+#team .col-md-4 {
+    margin-bottom: 30px;
+}
+
+#team img {
+    border: 5px solid #f8f9fa;
+    transition: transform 0.3s ease;
+}
+
+#team img:hover {
+    transform: scale(1.1);
+}
+
+#team h5 {
     margin-top: 10px;
+    font-size: 1.2rem;
+    font-weight: bold;
 }
 
-.rounded-circle {
-    border: 3px solid #ddd;
+#team p {
+    color: #777;
 }
 
+/* Footer */
 footer {
-    margin-top: 50px;
+    margin-top: auto;
+    background-color: #343a40;
+    color: white;
+    padding: 15px 0;
 }

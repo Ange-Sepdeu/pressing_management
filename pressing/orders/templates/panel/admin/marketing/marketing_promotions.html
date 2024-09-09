@@ -1,0 +1,127 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Marketing & Promotions</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="{% static 'css/marketing_promotions.css' %}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
+    <script src="https://kit.fontawesome.com/a076d05399.js"></script>
+
+    <style>
+        body {
+    background-color: #f8f9fa;
+}
+
+.container {
+    margin-top: 50px;
+}
+
+h1 {
+    margin-bottom: 30px;
+}
+
+h2 {
+    margin-bottom: 20px;
+}
+
+.form-group label {
+    font-weight: bold;
+}
+
+.form-control-file {
+    border: 1px solid #ced4da;
+    border-radius: 5px;
+}
+
+.btn {
+    margin-top: 10px;
+}
+
+.btn-primary, .btn-success, .btn-info {
+    border-radius: 5px;
+}
+
+    </style>
+</head>
+<body>
+    <div class="container my-5">
+        <h1 class="display-4 text-center animate__animated animate__fadeInUp">Marketing & Promotions</h1>
+        
+        <!-- Select Pressing Form -->
+        <div class="mb-5">
+            <h2>Select a Pressing for Promotion</h2>
+            <form method="post" enctype="multipart/form-data">
+                {% csrf_token %}
+                <div class="form-group">
+                    <label for="pressing">Pressing</label>
+                    <select id="pressing" name="pressing_id" class="form-control" required>
+                        <option value="">Select a Pressing</option>
+                        {% for pressing in pressings %}
+                            <option value="{{ pressing.id }}">{{ pressing.business_name }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <button type="submit" class="btn btn-primary">Select</button>
+            </form>
+        </div>
+
+        <!-- Upload Media -->
+        <div class="mb-5">
+            <h2>Upload Photos and Videos</h2>
+            <form method="post" enctype="multipart/form-data">
+                {% csrf_token %}
+                <input type="hidden" name="pressing_id" value="{{ pressing.id }}">
+                <div class="form-group">
+                    <label for="photos">Photos</label>
+                    <input type="file" id="photos" name="photos" class="form-control-file" multiple>
+                </div>
+                <div class="form-group">
+                    <label for="videos">Videos</label>
+                    <input type="file" id="videos" name="videos" class="form-control-file" multiple>
+                </div>
+                <button type="submit" class="btn btn-success">Upload</button>
+            </form>
+        </div>
+
+        <!-- Social Media Links -->
+        <div class="mb-5">
+            <h2>Social Media Links</h2>
+            <form method="post">
+                {% csrf_token %}
+                <div class="form-group">
+                    <label for="facebook">Facebook URL</label>
+                    <input type="url" id="facebook" name="facebook" class="form-control" placeholder="https://facebook.com/yourpage">
+                </div>
+                <div class="form-group">
+                    <label for="instagram">Instagram URL</label>
+                    <input type="url" id="instagram" name="instagram" class="form-control" placeholder="https://instagram.com/yourpage">
+                </div>
+                <div class="form-group">
+                    <label for="tiktok">TikTok URL</label>
+                    <input type="url" id="tiktok" name="tiktok" class="form-control" placeholder="https://tiktok.com/@yourpage">
+                </div>
+                <div class="form-group">
+                    <label for="youtube">YouTube URL</label>
+                    <input type="url" id="youtube" name="youtube" class="form-control" placeholder="https://youtube.com/yourchannel">
+                </div>
+                <button type="submit" class="btn btn-info">Save Links</button>
+            </form>
+        </div>
+
+        <!-- Promotion Posts -->
+        <div class="mb-5">
+            <h2>Promotion Posts</h2>
+            <!-- Implement logic to display and manage promotion posts here -->
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script src="{% static 'js/marketing_promotions.js' %}"></script>
+</body>
+</html>

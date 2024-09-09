@@ -427,3 +427,38 @@ def delete_user(request, user_id):
 
 def about_us_dev(request):
     return render(request, 'panel/admin/about/about_us_dev.html')
+
+
+from .models import PressingProfile, Photo, Video
+from .forms import PromotionForm, SocialMediaForm
+
+@login_required
+def marketing_promotions(request):
+    if request.method == 'POST':
+        pressing_id = request.POST.get('pressing_id')
+        pressing = get_object_or_404(PressingProfile, id=pressing_id)
+        
+        # Handle photo uploads
+        photos = request.FILES.getlist('photos')
+        for photo in photos:
+            photo_instance = Photo.objects.create(image=photo)
+            pressing.photos.add(photo_instance)
+
+        # Handle video uploads
+        videos = request.FILES.getlist('videos')
+        for video in videos:
+            video_instance = Video.objects.create(video_file=video)
+            pressing.videos.add(video_instance)
+        
+        # Handle social media links
+        if 'facebook' in request.POST:
+            pressing.facebook_url = request.POST.get('facebook')
+            pressing.instagram_url = request.POST.get('instagram')
+            pressing.tiktok_url = request.POST.get('tiktok')
+            pressing.youtube_url = request.POST.get('youtube')
+            pressing.save()
+        
+        return redirect('marketing_promotions')
+
+    pressings = PressingProfile.objects.all()
+    return render(request, 'panel/admin/marketing/marketing_promotions.html', {'pressings': pressings})

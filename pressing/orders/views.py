@@ -223,17 +223,14 @@ def apply_portfolio(request):
             video.pressing_profile = profile
             video.save()
 
-            # Process payment via Campay
+            # Redirect to payment page
             pressing_count = int(request.POST.get('pressing_count', 1))
             amount = pressing_count * 100  # Assuming 100 FCFA per pressing
-            payment_status = process_payment(request.user, amount, mobile_number)
+            request.session['amount'] = amount  # Store amount in session for payment
+            request.session['mobile_number'] = mobile_number  # Store mobile number in session
+            request.session['profile_id'] = profile.id  # Store profile ID for receipt generation
 
-            if payment_status == 'success':
-                messages.success(request, "Profile submitted successfully!")
-                return redirect('portfolio_selection')
-            else:
-                messages.error(request, "Payment failed. Please try again.")
-                # Optionally, you could handle the rollback of saved data if payment fails
+            return redirect('payment_page')  # Redirect to the payment page
         else:
             messages.error(request, "Please correct the errors below.")
     else:
@@ -245,28 +242,6 @@ def apply_portfolio(request):
         'profile_form': profile_form,
         'photo_form': photo_form,
         'video_form': video_form,
-    })
-
-
-@login_required
-def portfolio_selection(request):
-    # Assume two portfolio templates are available as options
-    portfolio_templates = ['Template 1', 'Template 2']
-
-    if request.method == 'POST':
-        selected_template = request.POST.get('template')
-        if selected_template:
-            # Update the user's profile with the selected portfolio template
-            user_profile = request.user.profile  # Assuming a one-to-one relationship between User and Profile
-            user_profile.portfolio_template = selected_template
-            user_profile.save()
-            messages.success(request, "Portfolio selected successfully!")
-            return redirect('dashboard')
-        else:
-            messages.error(request, "Please select a portfolio template.")
-
-    return render(request, 'panel/manager/manage_order/portfolio_selection.html', {
-        'portfolio_templates': portfolio_templates,
     })
 
 
@@ -282,14 +257,16 @@ campay = CamPayClient({
 
 from django.views.decorators.csrf import csrf_exempt
 import json
+from django.http import JsonResponse
+
 
 @csrf_exempt
-def process_payment(request):
+def payment_page(request):
     if request.method == 'POST':
         try:
             data = json.loads(request.body)
-            pressing_count = data.get('pressingCount')
-            cart_total = data.get('cartTotal')
+            pressing_count = data.get('pressingCount', 1)
+            cart_total = pressing_count * 100  # Calculate total based on pressing count
             phone_number = data.get('phoneNumber')
             cart_items = data.get('cartItems')
 
@@ -314,8 +291,10 @@ def process_payment(request):
 
         except Exception as e:
             return JsonResponse({'success': False, 'message': str(e)}, status=400)
-    
+
     return JsonResponse({'success': False, 'message': 'Invalid request method'}, status=400)
+
+
 
 @login_required
 def generate_receipt(cart_items, cart_total):
@@ -326,9 +305,13 @@ def generate_receipt(cart_items, cart_total):
     context = {
         'cart_items': cart_items,
         'cart_total': cart_total,
+        'receipt_id': receipt.id,
+        'business_name': "Your Business Name",  # Add your business name here
+        'date': timezone.now(),  # Assuming you want to include the current date
     }
     html = render_to_string('panel/manager/manage_order/receipt.html', context)
     result = BytesIO()
+    
     pdf = pisa.CreatePDF(BytesIO(html.encode('utf-8')), dest=result)
 
     if not pdf.err:
@@ -337,6 +320,8 @@ def generate_receipt(cart_items, cart_total):
         return receipt.id
 
     return None
+
+
 
 @login_required
 def download_receipt(request, receipt_id):
@@ -354,10 +339,11 @@ def download_receipt(request, receipt_id):
     pisa_status = pisa.CreatePDF(html, dest=response)
 
     if pisa_status.err:
-        return HttpResponse('Error generating PDF')
+        return HttpResponse('Error generating PDF', status=500)
     return response
 
 
+    
 
 
 @login_required

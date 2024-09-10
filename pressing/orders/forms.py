@@ -56,26 +56,35 @@ class ForgotPasswordForm(forms.Form):
 from .models import PressingProfile, Photo, Video
 
 
+
 class PressingProfileForm(forms.ModelForm):
     class Meta:
         model = PressingProfile
         fields = [
             'business_name', 
-            'location', 
+            'region', 
+            'city', 
+            'quarter', 
+            'telephone_number', 
+            'email',
             'services_offered', 
             'pricing', 
             'photos', 
             'videos', 
             'about_us', 
-            'pressing_count'  # Include the new field here
+            'pressing_count'
         ]
         widgets = {
             'business_name': forms.TextInput(attrs={'class': 'form-control'}),
-            'location': forms.TextInput(attrs={'class': 'form-control'}),
+            'region': forms.TextInput(attrs={'class': 'form-control'}),  # Widget for region
+            'city': forms.TextInput(attrs={'class': 'form-control'}),    # Widget for city
+            'quarter': forms.TextInput(attrs={'class': 'form-control'}),  # Widget for quarter
+            'telephone_number': forms.TextInput(attrs={'class': 'form-control'}),  # Widget for telephone
+            'email': forms.EmailInput(attrs={'class': 'form-control'}),  # Widget for email
             'services_offered': forms.Textarea(attrs={'class': 'form-control'}),
             'pricing': forms.Textarea(attrs={'class': 'form-control'}),
             'about_us': forms.Textarea(attrs={'class': 'form-control'}),
-            'pressing_count': forms.NumberInput(attrs={'class': 'form-control'}),  # Added widget for new field
+            'pressing_count': forms.NumberInput(attrs={'class': 'form-control'}),
         }
 
 class PhotoForm(forms.ModelForm):

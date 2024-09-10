@@ -31,7 +31,11 @@ class Contact(models.Model):
 class PressingProfile(models.Model):
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     business_name = models.CharField(max_length=255)
-    location = models.CharField(max_length=255)
+    region = models.CharField(max_length=255, default='Center')  # Default value for region
+    city = models.CharField(max_length=255, default='Yaoundé')   # Default value for city
+    quarter = models.CharField(max_length=255, default='Mendong') # Default value for quarter  # New field for quarter
+    telephone_number = models.CharField(max_length=20, blank=True, null=True)  # New field for telephone
+    email = models.EmailField(blank=True, null=True)  # New field for email
     services_offered = models.TextField()
     pricing = models.TextField()
     photos = models.ManyToManyField('Photo', blank=True)
@@ -58,7 +62,6 @@ class Video(models.Model):
     
     def __str__(self):
         return f"Video {self.id}"
-
 
 
 class Receipt(models.Model):

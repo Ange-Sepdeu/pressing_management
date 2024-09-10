@@ -1,7 +1,7 @@
 from django.urls import path
 from . import views
 from django.contrib.auth import views as auth_views  # Add this import
-from .views import apply_portfolio, portfolio_selection, process_payment, download_receipt  # Import process_payment
+from .views import apply_portfolio, payment_page, download_receipt  # Import process_payment
 from .views import chat_view, marketing_promotions, add_pressing
 from .views import send_message, get_messages, analytics_view
 
@@ -29,8 +29,9 @@ urlpatterns = [
     path('setting/', views.setting, name='setting'),
     path('customer_feedback/', views.customer_feedback, name='customer_feedback'),
     path('apply-portfolio/', views.apply_portfolio, name='apply_portfolio'),
-    path('portfolio-selection/', views.portfolio_selection, name='portfolio_selection'),
-    path('process-payment/', process_payment, name='process_payment'),
+    path('payment_page/', payment_page, name='payment_page'),
+
+
     path('download-receipt/<int:receipt_id>/', download_receipt, name='download_receipt'),
     path('chat/', chat_view, name='chat'),
 

@@ -1,110 +1,105 @@
-{% extends 'base.html' %}
+{% extends 'base2.html' %}
+
 {% block content %}
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
-    <style>
-        body {
-            background-color: #f8f9fa;
-        }
-        .container {
-            margin-top: 50px;
-            padding: 30px;
-            border-radius: 10px;
-            background-color: #ffffff;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-        }
-        h2 {
-            margin-bottom: 20px;
-        }
-        .btn-primary {
-            background-color: #007bff;
-            border: none;
-        }
-        .btn-primary:hover {
-            background-color: #0056b3;
-        }
-        .payment-summary {
-            margin-top: 20px;
-        }
-    </style>
-</head>
-<body>
-    <div class="container">
-        <h2>Apply Portfolio</h2>
-        <form id="portfolioForm" method="POST" enctype="multipart/form-data">
-            {% csrf_token %}
-            {{ profile_form.as_p }}
-            {{ photo_form.as_p }}
-            {{ video_form.as_p }}
-            <div class="form-group">
-                <label for="pressing_count">Number of Pressings</label>
-                <input type="number" name="pressing_count" id="pressing_count" class="form-control" required>
+<div class="container mt-5">
+    <h2 class="text-center">Apply for Portfolio</h2>
+    <form method="POST" enctype="multipart/form-data">
+        {% csrf_token %}
+        <div class="form-row">
+            <div class="col-md-6">
+                {{ profile_form.business_name.label_tag }} 
+                {{ profile_form.business_name }}
             </div>
-            <div class="form-group">
-                <label for="phone_number">Mobile Number for Payment</label>
-                <input type="text" name="phone_number" id="phone_number" class="form-control" placeholder="e.g., 6xxxxxxxx" required>
+            <div class="col-md-6">
+                {{ profile_form.region.label_tag }}
+                {{ profile_form.region }}
             </div>
-            <div class="payment-summary">
-                <p>Total Amount: <span id="totalAmount">0</span> FCFA</p>
+        </div>
+        <div class="form-row">
+            <div class="col-md-6">
+                {{ profile_form.city.label_tag }}
+                {{ profile_form.city }}
             </div>
-            <button type="submit" class="btn btn-primary">Submit Profile and Pay</button>
-        </form>
-    </div>
+            <div class="col-md-6">
+                {{ profile_form.quarter.label_tag }}
+                {{ profile_form.quarter }}
+            </div>
+        </div>
+        <div class="form-row">
+            <div class="col-md-6">
+                {{ profile_form.telephone_number.label_tag }}
+                {{ profile_form.telephone_number }}
+            </div>
+            <div class="col-md-6">
+                {{ profile_form.email.label_tag }}
+                {{ profile_form.email }}
+            </div>
+        </div>
+        <div class="form-group">
+            {{ profile_form.services_offered.label_tag }}
+            {{ profile_form.services_offered }}
+        </div>
+        <div class="form-group">
+            {{ profile_form.pricing.label_tag }}
+            {{ profile_form.pricing }}
+        </div>
+        <div class="form-group">
+            {{ profile_form.about_us.label_tag }}
+            {{ profile_form.about_us }}
+        </div>
+        <div class="form-group">
+            {{ profile_form.pressing_count.label_tag }}
+            {{ profile_form.pressing_count }}
+        </div>
 
-    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-    <script>
-        const pricePerPressing = 100; // Price per pressing in FCFA
-        const pressingCountInput = document.getElementById('pressing_count');
-        const totalAmountElement = document.getElementById('totalAmount');
+        <!-- Placeholder for dynamically added fields -->
+        <div id="dynamicFields"></div>
+        
+        <button type="submit" class="btn btn-primary btn-block">Submit Portfolio</button>
+    </form>
+</div>
 
-        pressingCountInput.addEventListener('input', function() {
-            const pressingCount = parseInt(pressingCountInput.value) || 0;
-            const totalAmount = pressingCount * pricePerPressing;
-            totalAmountElement.textContent = totalAmount;
-        });
+<!-- JavaScript to handle dynamic field addition -->
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const pressingCountInput = document.getElementById('id_pressing_count');
+        const dynamicFieldsContainer = document.getElementById('dynamicFields');
 
-        document.getElementById('portfolioForm').addEventListener('submit', function(event) {
-            event.preventDefault();
+        pressingCountInput.addEventListener('input', function () {
+            // Clear existing fields
+            dynamicFieldsContainer.innerHTML = '';
 
             const pressingCount = parseInt(pressingCountInput.value);
-            const phoneNumber = document.getElementById('phone_number').value;
-            const totalAmount = pressingCount * pricePerPressing;
 
-            if (phoneNumber) {
-                // Proceed with payment and form submission
-                $.ajax({
-                    url: "{% url 'process_payment' %}",
-                    method: 'POST',
-                    data: JSON.stringify({
-                        pressingCount: pressingCount,
-                        cartTotal: totalAmount,
-                        phoneNumber: phoneNumber,
-                        cartItems: [{ description: "Portfolio Pressing", quantity: pressingCount, price: pricePerPressing }]
-                    }),
-                    contentType: 'application/json',
-                    success: function(response) {
-                        if (response.success) {
-                            alert("Payment successful! Your receipt ID: " + response.receiptId);
-                            window.location.href = response.receiptUrl;
-                        } else {
-                            alert("Payment failed: " + response.message);
-                        }
-                    },
-                    error: function(error) {
-                        alert("An error occurred during payment. Please try again.");
-                    }
-                });
-            } else {
-                alert("Please enter your mobile number.");
+            for (let i = 1; i <= pressingCount; i++) {
+                const dynamicFields = `
+                    <h5 class="mt-4">Pressing ${i}</h5>
+                    <div class="form-row">
+                        <div class="col-md-4">
+                            <label for="id_region_${i}">Region ${i}</label>
+                            <input type="text" name="region_${i}" id="id_region_${i}" class="form-control" required>
+                        </div>
+                        <div class="col-md-4">
+                            <label for="id_city_${i}">City ${i}</label>
+                            <input type="text" name="city_${i}" id="id_city_${i}" class="form-control" required>
+                        </div>
+                        <div class="col-md-4">
+                            <label for="id_quarter_${i}">Quarter ${i}</label>
+                            <input type="text" name="quarter_${i}" id="id_quarter_${i}" class="form-control" required>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="id_photo_${i}">Photo ${i}</label>
+                        <input type="file" name="photo_${i}" id="id_photo_${i}" class="form-control-file" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="id_video_${i}">Video ${i}</label>
+                        <input type="file" name="video_${i}" id="id_video_${i}" class="form-control-file" required>
+                    </div>`;
+                
+                dynamicFieldsContainer.insertAdjacentHTML('beforeend', dynamicFields);
             }
         });
-    </script>
-</body>
-</html>
+    });
+</script>
 {% endblock %}

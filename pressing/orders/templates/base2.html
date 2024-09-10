@@ -1,0 +1,55 @@
+{% load static %}
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}PressPro Dashboard{% endblock %}</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+    <link rel="stylesheet" href="{% static 'css/base2.css' %}">
+
+</head>
+<body>
+
+<div class="dashboard">
+    <div class="dashboard-nav">
+        <header>
+            <a href="{% url 'pressing_manager' %}" class="brand-logo animate__animated animate__fadeInLeft">
+                <i class="fas fa-tshirt"></i> 
+                <span>PressPro Manager Dashboard</span>
+            </a>
+            <div class="profile-avatar">
+                {% if user.profile_picture %}
+                    <img src="{{ user.profile_picture.url }}" alt="{{ user.username }}'s Avatar" class="img-fluid">
+                {% else %}
+                    <img src="{% static 'image/auth.jpeg' %}" alt="Default Avatar" class="img-fluid">
+                {% endif %}
+            </div>
+        </header>
+        <nav class="dashboard-nav-list">
+            <a href="{% url 'pressing_manager' %}" class="dashboard-nav-item active"><i class="fas fa-tachometer-alt"></i> Dashboard</a>
+            <a href="{% url 'apply_portfolio' %}" class="dashboard-nav-item"><i class="fas fa-users-cog"></i> Apply Portfolio</a>
+            <a href="{% url 'chat' %}" class="dashboard-nav-item"><i class="fas fa-comments"></i> Chat with Delivery Team</a>
+            <a href="#" class="dashboard-nav-item"><i class="fas fa-tasks"></i> Manage Orders</a>
+            <a href="#" class="dashboard-nav-item"><i class="fas fa-map-marked-alt"></i> Track Deliveries</a>
+            <a href="{% url 'customer_feedback' %}" class="dashboard-nav-item"><i class="fas fa-thumbs-up"></i> Customer Feedback</a>
+            <a href="#" class="dashboard-nav-item"><i class="fas fa-bell"></i> Notifications</a>
+            <a href="{% url 'setting' %}" class="dashboard-nav-item"><i class="fas fa-cogs"></i> Settings</a>
+            <a href="{% url 'about_us' %}" class="dashboard-nav-item"><i class="fas fa-info-circle"></i> About Us</a>
+        </nav>
+        <a href="{% url 'logout' %}" class="btn btn-primary logout-btn">Logout</a>
+    </div>
+    
+    <div class="dashboard-content flex-fill">
+        {% block content %}
+        {% endblock %}
+    </div>
+</div>
+
+<script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">

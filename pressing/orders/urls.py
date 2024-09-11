@@ -3,7 +3,8 @@ from . import views
 from django.contrib.auth import views as auth_views  # Add this import
 from .views import apply_portfolio, payment_page, download_receipt  # Import process_payment
 from .views import chat_view, marketing_promotions, add_pressing
-from .views import send_message, get_messages, analytics_view
+from .views import send_message, get_messages, analytics_view, view_portfolio
+from .views import track_deliveries, view_deliveries, schedule_pickup, view_invoices, track_vehicle
 
 
 
@@ -48,6 +49,17 @@ urlpatterns = [
     path('chat/send/', send_message, name='send_message'),
     path('chat/messages/<int:user_id>/', get_messages, name='get_messages'),
     path('analytics/', analytics_view, name='analytics'),
+    path('portfolio/<int:user_id>/', view_portfolio, name='view_portfolio'),
+
+
+
+    path('track_deliveries/', track_deliveries, name='track_deliveries'),
+    path('view_deliveries/', view_deliveries, name='view_deliveries'),
+    path('schedule_pickup/', schedule_pickup, name='schedule_pickup'),
+    path('view_invoices/', view_invoices, name='view_invoices'),
+    path('track_vehicle/', track_vehicle, name='track_vehicle'),
+
+
 
  
 

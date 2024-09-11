@@ -53,9 +53,10 @@ class ForgotPasswordForm(forms.Form):
 
 
 
-from .models import PressingProfile, Photo, Video
 
 
+
+from .models import PressingProfile, Region, Town, Quarter, Photo, Video
 
 class PressingProfileForm(forms.ModelForm):
     class Meta:
@@ -63,42 +64,81 @@ class PressingProfileForm(forms.ModelForm):
         fields = [
             'business_name', 
             'region', 
-            'city', 
+            'town', 
             'quarter', 
             'telephone_number', 
             'email',
             'services_offered', 
             'pricing', 
-            'photos', 
-            'videos', 
             'about_us', 
             'pressing_count'
         ]
         widgets = {
             'business_name': forms.TextInput(attrs={'class': 'form-control'}),
-            'region': forms.TextInput(attrs={'class': 'form-control'}),  # Widget for region
-            'city': forms.TextInput(attrs={'class': 'form-control'}),    # Widget for city
-            'quarter': forms.TextInput(attrs={'class': 'form-control'}),  # Widget for quarter
-            'telephone_number': forms.TextInput(attrs={'class': 'form-control'}),  # Widget for telephone
-            'email': forms.EmailInput(attrs={'class': 'form-control'}),  # Widget for email
+            'region': forms.Select(attrs={'class': 'form-control'}),
+            'town': forms.Select(attrs={'class': 'form-control'}),
+            'quarter': forms.Select(attrs={'class': 'form-control'}),
+            'telephone_number': forms.TextInput(attrs={'class': 'form-control'}),
+            'email': forms.EmailInput(attrs={'class': 'form-control'}),
             'services_offered': forms.Textarea(attrs={'class': 'form-control'}),
             'pricing': forms.Textarea(attrs={'class': 'form-control'}),
             'about_us': forms.Textarea(attrs={'class': 'form-control'}),
             'pressing_count': forms.NumberInput(attrs={'class': 'form-control'}),
         }
 
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields['town'].queryset = Town.objects.none()
+        self.fields['quarter'].queryset = Quarter.objects.none()
+
+        if 'region' in self.data:
+            try:
+                region_id = int(self.data.get('region'))
+                self.fields['town'].queryset = Town.objects.filter(region_id=region_id).order_by('name')
+            except (ValueError, TypeError):
+                pass
+        elif self.instance.pk:
+            self.fields['town'].queryset = Town.objects.filter(region_id=self.instance.region.id).order_by('name')
+
+        if 'town' in self.data:
+            try:
+                town_id = int(self.data.get('town'))
+                self.fields['quarter'].queryset = Quarter.objects.filter(town_id=town_id).order_by('name')
+            except (ValueError, TypeError):
+                pass
+        elif self.instance.pk:
+            self.fields['quarter'].queryset = Quarter.objects.filter(town_id=self.instance.town.id).order_by('name')
+
 class PhotoForm(forms.ModelForm):
     class Meta:
         model = Photo
-        fields = ['image']
-
+        fields = ['image'] 
+        
 class VideoForm(forms.ModelForm):
     class Meta:
         model = Video
-        fields = ['video_file']
+        fields = ['video_file'] 
 
+class MultipleFileInput(forms.ClearableFileInput):
+    allow_multiple_selected = True
 
+class MediaForm(forms.Form):
+    photos = forms.FileField(
+        widget=MultipleFileInput(attrs={'multiple': True}),
+        required=False
+    )
+    videos = forms.FileField(
+        widget=MultipleFileInput(attrs={'multiple': True}),
+        required=False
+    )
 
+    def clean_photos(self):
+        photos = self.files.getlist('photos')
+        return photos
+
+    def clean_videos(self):
+        videos = self.files.getlist('videos')
+        return videos
 
 
 

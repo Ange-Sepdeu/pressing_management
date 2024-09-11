@@ -1,0 +1,31 @@
+<!-- panel/manager/manage_order/view_deliveries.html -->
+{% extends 'base2.html' %}
+{% block content %}
+<div class="container">
+    <h1 class="my-4">View Deliveries</h1>
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Client Name</th>
+                <th>Address</th>
+                <th>Status</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for delivery in deliveries %}
+            <tr>
+                <td>{{ delivery.id }}</td>
+                <td>{{ delivery.client_name }}</td>
+                <td>{{ delivery.address }}</td>
+                <td>{{ delivery.status }}</td>
+                <td>
+                    <a href="{% url 'track_vehicle' delivery.vehicle.id %}" class="btn btn-primary btn-sm">Track Vehicle</a>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}

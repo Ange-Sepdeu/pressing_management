@@ -1,0 +1,24 @@
+<!-- panel/manager/manage_order/track_vehicle.html -->
+{% extends 'base2.html' %}
+{% block content %}
+<div class="container">
+    <h1 class="my-4">Track Vehicle</h1>
+    <div id="map" style="height: 500px;"></div>
+</div>
+<script>
+    function initMap() {
+        var location = { lat: {{ vehicle.latitude }}, lng: {{ vehicle.longitude }} };
+        var map = new google.maps.Map(document.getElementById('map'), {
+            zoom: 15,
+            center: location
+        });
+        var marker = new google.maps.Marker({
+            position: location,
+            map: map
+        });
+    }
+</script>
+<script async defer
+    src="https://maps.googleapis.com/maps/api/js?key=YOUR_API_KEY&callback=initMap">
+</script>
+{% endblock %}

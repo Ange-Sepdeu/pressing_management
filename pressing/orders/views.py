@@ -199,50 +199,19 @@ def customer_feedback(request):
     return render(request, 'panel/manager/setting/customer_feedback.html', {'contacts': contacts, 'reply_form': ReplyForm()})
 
 
-@login_required
-def apply_portfolio(request):
-    if request.method == 'POST':
-        profile_form = PressingProfileForm(request.POST, request.FILES)
-        photo_form = PhotoForm(request.POST, request.FILES)
-        video_form = VideoForm(request.POST, request.FILES)
-        mobile_number = request.POST.get('mobile_number')  # Get the mobile number for payment
 
-        if profile_form.is_valid() and photo_form.is_valid() and video_form.is_valid():
-            # Save the PressingProfile instance without committing to the database
-            profile = profile_form.save(commit=False)
-            profile.user = request.user
-            profile.save()
 
-            # Associate photos with the profile
-            photo = photo_form.save(commit=False)
-            photo.pressing_profile = profile
-            photo.save()
+from django.contrib import messages
+from django.views.decorators.csrf import csrf_exempt
+import json
+from django.http import JsonResponse, HttpResponse
 
-            # Associate videos with the profile
-            video = video_form.save(commit=False)
-            video.pressing_profile = profile
-            video.save()
 
-            # Redirect to payment page
-            pressing_count = int(request.POST.get('pressing_count', 1))
-            amount = pressing_count * 100  # Assuming 100 FCFA per pressing
-            request.session['amount'] = amount  # Store amount in session for payment
-            request.session['mobile_number'] = mobile_number  # Store mobile number in session
-            request.session['profile_id'] = profile.id  # Store profile ID for receipt generation
 
-            return redirect('payment_page')  # Redirect to the payment page
-        else:
-            messages.error(request, "Please correct the errors below.")
-    else:
-        profile_form = PressingProfileForm()
-        photo_form = PhotoForm()
-        video_form = VideoForm()
+# views.py
+from .models import PressingProfile, Region, Town, Quarter, Photo, Video
+from .forms import PressingProfileForm, PhotoForm, VideoForm, MediaForm
 
-    return render(request, 'panel/manager/manage_order/apply_portfolio.html', {
-        'profile_form': profile_form,
-        'photo_form': photo_form,
-        'video_form': video_form,
-    })
 
 
 
@@ -255,20 +224,71 @@ campay = CamPayClient({
 
 
 
-from django.views.decorators.csrf import csrf_exempt
-import json
-from django.http import JsonResponse
+@login_required
+def apply_portfolio(request):
+    if request.method == 'POST':
+        profile_form = PressingProfileForm(request.POST)
+        photos = request.FILES.getlist('photos')
+        videos = request.FILES.getlist('videos')
+
+        if profile_form.is_valid():
+            profile = profile_form.save(commit=False)
+            profile.user = request.user
+            profile.save()
+
+            for photo in photos:
+                Photo.objects.create(image=photo, pressing_profile=profile)
+            for video in videos:
+                Video.objects.create(video_file=video, pressing_profile=profile)
+
+            return redirect('payment_page')
+        else:
+            messages.error(request, "Please correct the errors below.")
+    else:
+        profile_form = PressingProfileForm()
+    
+    # Fetch regions, towns, and quarters for use in the dynamic fields
+    regions = Region.objects.all()
+    towns = Town.objects.all()
+    quarters = Quarter.objects.all()
+
+    context = {
+        'profile_form': profile_form,
+        'regions': regions,
+        'towns': towns,
+        'quarters': quarters,
+    }
+    return render(request, 'panel/manager/manage_order/apply_portfolio.html', context)
+
+
+
+def load_towns(request):
+    region_id = request.GET.get('region_id')
+    towns = Town.objects.filter(region_id=region_id).all()
+    return JsonResponse(list(towns.values('id', 'name')), safe=False)
+
+def load_quarters(request):
+    town_id = request.GET.get('town_id')
+    quarters = Quarter.objects.filter(town_id=town_id).all()
+    return JsonResponse(list(quarters.values('id', 'name')), safe=False)
+    
+
+
+
+
 
 
 @csrf_exempt
+@login_required
 def payment_page(request):
+    pressing_count = request.session.get('pressing_count', 1)
+    mobile_number = request.session.get('mobile_number')
+
     if request.method == 'POST':
         try:
             data = json.loads(request.body)
-            pressing_count = data.get('pressingCount', 1)
             cart_total = pressing_count * 100  # Calculate total based on pressing count
             phone_number = data.get('phoneNumber')
-            cart_items = data.get('cartItems')
 
             # Process payment with CamPay
             collect = campay.collect({
@@ -280,7 +300,7 @@ def payment_page(request):
             })
 
             if collect.get('status') == 'SUCCESSFUL':
-                receipt_id = generate_receipt(cart_items, cart_total)
+                receipt_id = generate_receipt(cart_total)
                 return JsonResponse({
                     'success': True,
                     'receiptId': receipt_id,
@@ -292,22 +312,20 @@ def payment_page(request):
         except Exception as e:
             return JsonResponse({'success': False, 'message': str(e)}, status=400)
 
-    return JsonResponse({'success': False, 'message': 'Invalid request method'}, status=400)
-
-
+    return render(request, 'panel/manager/manage_order/payment_page.html', {
+        'pressing_count': pressing_count,
+        'mobile_number': mobile_number,
+    })
 
 @login_required
-def generate_receipt(cart_items, cart_total):
-    # Create a receipt object and save it to the database
+def generate_receipt(cart_total):
     receipt = Receipt.objects.create(total=cart_total)
 
-    # Generate PDF receipt
     context = {
-        'cart_items': cart_items,
         'cart_total': cart_total,
         'receipt_id': receipt.id,
-        'business_name': "Your Business Name",  # Add your business name here
-        'date': timezone.now(),  # Assuming you want to include the current date
+        'business_name': "Your Business Name",
+        'date': timezone.now(),
     }
     html = render_to_string('panel/manager/manage_order/receipt.html', context)
     result = BytesIO()
@@ -321,21 +339,14 @@ def generate_receipt(cart_items, cart_total):
 
     return None
 
-
-
 @login_required
 def download_receipt(request, receipt_id):
-    # Retrieve the receipt object based on the receipt_id
     receipt = get_object_or_404(Receipt, id=receipt_id)
-
-    # Render the receipt template with receipt data
     html = render_to_string('panel/manager/manage_order/receipt.html', {'receipt': receipt})
 
-    # Create a PDF response
     response = HttpResponse(content_type='application/pdf')
     response['Content-Disposition'] = f'attachment; filename="receipt_{receipt.id}.pdf"'
 
-    # Convert HTML to PDF and write to response
     pisa_status = pisa.CreatePDF(html, dest=response)
 
     if pisa_status.err:
@@ -343,8 +354,72 @@ def download_receipt(request, receipt_id):
     return response
 
 
-    
 
+
+
+@login_required
+def view_portfolio(request, user_id):
+    # Retrieve all PressingProfile objects for the given user_id
+    pressing_profiles = PressingProfile.objects.filter(user__id=user_id).prefetch_related('photos', 'videos')
+
+    if not pressing_profiles.exists():
+        return render(request, '404.html')  # Handle case where no profile exists
+
+    context = {
+        'pressing_profiles': pressing_profiles,
+    }
+    return render(request, 'panel/manager/manage_order/view_portfolio.html', context)
+
+
+
+
+
+from .models import Geolocation
+
+
+@login_required
+def track_deliveries(request):
+    if request.method == 'POST':
+        latitude = request.POST.get('latitude')
+        longitude = request.POST.get('longitude')
+        location_type = request.POST.get('location_type')
+        
+        # Save geolocation to the database
+        Geolocation.objects.create(latitude=latitude, longitude=longitude, location_type=location_type)
+        
+        return redirect('track_deliveries')
+    
+    # Get the latest geolocation entry
+    latest_geolocation = Geolocation.objects.last()
+    
+    context = {
+        'latitude': latest_geolocation.latitude if latest_geolocation else None,
+        'longitude': latest_geolocation.longitude if latest_geolocation else None,
+        'location_type': latest_geolocation.get_location_type_display() if latest_geolocation else None,
+    }
+    return render(request, 'panel/manager/manage_order/track_deliveries.html', context)
+
+
+
+from .models import Delivery, Invoice, Vehicle
+
+def view_deliveries(request):
+    deliveries = Delivery.objects.all()
+    return render(request, 'panel/manager/manage_order/view_deliveries.html', {'deliveries': deliveries})
+
+def schedule_pickup(request):
+    if request.method == 'POST':
+        # Logic to schedule a pickup, e.g., save to the database
+        pass
+    return render(request, 'panel/manager/manage_order/schedule_pickup.html')
+
+def view_invoices(request):
+    invoices = Invoice.objects.all()
+    return render(request, 'panel/manager/manage_order/view_invoices.html', {'invoices': invoices})
+
+def track_vehicle(request, vehicle_id):
+    vehicle = get_object_or_404(Vehicle, id=vehicle_id)
+    return render(request, 'panel/manager/manage_order/track_vehicle.html', {'vehicle': vehicle})
 
 @login_required
 def chat_view(request):
@@ -369,6 +444,11 @@ def chat_view(request):
         'form': form,
     }
     return render(request, 'panel/manager/chat/chat.html', context)
+
+
+
+
+
 
 
 

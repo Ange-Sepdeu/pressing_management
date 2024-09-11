@@ -1,5 +1,4 @@
 {% extends 'base2.html' %}
-
 {% block content %}
 <div class="container mt-5">
     <h2 class="text-center">Apply for Portfolio</h2>
@@ -9,20 +8,6 @@
             <div class="col-md-6">
                 {{ profile_form.business_name.label_tag }} 
                 {{ profile_form.business_name }}
-            </div>
-            <div class="col-md-6">
-                {{ profile_form.region.label_tag }}
-                {{ profile_form.region }}
-            </div>
-        </div>
-        <div class="form-row">
-            <div class="col-md-6">
-                {{ profile_form.city.label_tag }}
-                {{ profile_form.city }}
-            </div>
-            <div class="col-md-6">
-                {{ profile_form.quarter.label_tag }}
-                {{ profile_form.quarter }}
             </div>
         </div>
         <div class="form-row">
@@ -77,15 +62,27 @@
                     <div class="form-row">
                         <div class="col-md-4">
                             <label for="id_region_${i}">Region ${i}</label>
-                            <input type="text" name="region_${i}" id="id_region_${i}" class="form-control" required>
+                            <select name="region_${i}" id="id_region_${i}" class="form-control" required>
+                                {% for region in regions %}
+                                    <option value="{{ region.id }}">{{ region.name }}</option>
+                                {% endfor %}
+                            </select>
                         </div>
                         <div class="col-md-4">
                             <label for="id_city_${i}">City ${i}</label>
-                            <input type="text" name="city_${i}" id="id_city_${i}" class="form-control" required>
+                            <select name="city_${i}" id="id_city_${i}" class="form-control" required>
+                                {% for town in towns %}
+                                    <option value="{{ town.id }}">{{ town.name }}</option>
+                                {% endfor %}
+                            </select>
                         </div>
                         <div class="col-md-4">
                             <label for="id_quarter_${i}">Quarter ${i}</label>
-                            <input type="text" name="quarter_${i}" id="id_quarter_${i}" class="form-control" required>
+                            <select name="quarter_${i}" id="id_quarter_${i}" class="form-control" required>
+                                {% for quarter in quarters %}
+                                    <option value="{{ quarter.id }}">{{ quarter.name }}</option>
+                                {% endfor %}
+                            </select>
                         </div>
                     </div>
                     <div class="form-group">

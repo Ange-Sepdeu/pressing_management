@@ -38,10 +38,10 @@
             </header>
             <nav class="dashboard-nav-list">
                 <a href="{% url 'pressing_manager' %}" class="dashboard-nav-item active"><i class="fas fa-tachometer-alt"></i> Dashboard</a>
-                <a href="" class="dashboard-nav-item"><i class="fas fa-users-cog"></i> Apply Portfolio</a>
+                <a href="{% url 'apply_portfolio' %}" class="dashboard-nav-item"><i class="fas fa-users-cog"></i> Apply Portfolio</a>
                 <a href="{% url 'chat' %}" class="dashboard-nav-item"><i class="fas fa-comments"></i> Chat with Delivery Team</a>
-                <a href="#" class="dashboard-nav-item"><i class="fas fa-tasks"></i> Manage Orders</a>
-                <a href="#" class="dashboard-nav-item"><i class="fas fa-map-marked-alt"></i> Track Deliveries</a>
+                <a href="{% url 'view_portfolio' user_id=request.user.id %}" class="dashboard-nav-item"><i class="fas fa-tasks"></i> View Portfolio</a>
+                <a href="{% url 'track_deliveries' %}" class="dashboard-nav-item"><i class="fas fa-map-marked-alt"></i> Track Deliveries</a>
                 <a href="{% url 'customer_feedback' %}" class="dashboard-nav-item"><i class="fas fa-thumbs-up"></i> Customer Feedback</a>
                 <a href="#" class="dashboard-nav-item"><i class="fas fa-bell"></i> Notifications</a>
                 <a href="{% url 'setting' %}" class="dashboard-nav-item"><i class="fas fa-cogs"></i> Settings</a>

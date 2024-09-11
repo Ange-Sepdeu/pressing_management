@@ -1,0 +1,112 @@
+<!-- templates/panel/manager/manage_order/track_deliveries.html -->
+{% extends 'base2.html' %}
+
+
+<style>
+    /* static/css/track_deliveries.css */
+body {
+    background-color: #f8f9fa;
+}
+
+.container {
+    background-color: #ffffff;
+    padding: 20px;
+    border-radius: 5px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+h1 {
+    margin-bottom: 20px;
+}
+
+#map {
+    border-radius: 5px;
+    border: 1px solid #ddd;
+}
+
+.list-group-item {
+    margin-top: 10px;
+}
+
+.dashboard-nav-item {
+    text-decoration: none;
+    color: #333;
+}
+
+.dashboard-nav-item:hover {
+    text-decoration: underline;
+}
+
+</style>
+{% block content %}
+<div class="container mt-5">
+    <h1>Track Deliveries</h1>
+    
+    <!-- Form to submit geolocation -->
+    <form method="POST" class="mb-4">
+        {% csrf_token %}
+        <div class="form-group">
+            <label for="latitude">Latitude</label>
+            <input type="text" class="form-control" id="latitude" name="latitude" placeholder="Enter Latitude" required>
+        </div>
+        <div class="form-group">
+            <label for="longitude">Longitude</label>
+            <input type="text" class="form-control" id="longitude" name="longitude" placeholder="Enter Longitude" required>
+        </div>
+        <div class="form-group">
+            <label for="location_type">Location Type</label>
+            <select class="form-control" id="location_type" name="location_type" required>
+                <option value="delivery">Deliver Dressing</option>
+                <option value="pickup">Pickup</option>
+            </select>
+        </div>
+        <button type="submit" class="btn btn-primary mt-3">Submit</button>
+    </form>
+    
+    <!-- Google Map -->
+    <div id="map" class="mt-4" style="height: 500px; width: 100%;"></div>
+
+    <!-- Additional Options -->
+    <h2 class="mt-5">Delivery Management Options</h2>
+    <ul class="list-group">
+        <li class="list-group-item">
+            <a href="#" class="dashboard-nav-item"><i class="fas fa-box-open"></i> View All Deliveries</a>
+        </li>
+        <li class="list-group-item">
+            <a href="#" class="dashboard-nav-item"><i class="fas fa-calendar-check"></i> Schedule Pickup</a>
+        </li>
+        <li class="list-group-item">
+            <a href="#" class="dashboard-nav-item"><i class="fas fa-file-invoice-dollar"></i> View Invoices</a>
+        </li>
+        <li class="list-group-item">
+            <a href="#" class="dashboard-nav-item"><i class="fas fa-truck"></i> Track Delivery Vehicle</a>
+        </li>
+    </ul>
+</div>
+
+<!-- Google Maps JavaScript API -->
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAOVYRIgupAurZup5y1PRh8Ismb1A3lLao&libraries=places&callback=initMap"></script>
+<script>
+    function initMap() {
+        {% if latitude and longitude %}
+            var location = { lat: parseFloat({{ latitude }}), lng: parseFloat({{ longitude }}) };
+        {% else %}
+            var location = { lat: -1.2921, lng: 36.8219 }; // Default location (Nairobi, Kenya)
+        {% endif %}
+        
+        var map = new google.maps.Map(document.getElementById('map'), {
+            zoom: 14,
+            center: location
+        });
+        
+        var marker = new google.maps.Marker({
+            position: location,
+            map: map,
+            title: '{{ location_type }} Location'
+        });
+    }
+    
+    // Initialize the map
+    google.maps.event.addDomListener(window, 'load', initMap);
+</script>
+{% endblock %}

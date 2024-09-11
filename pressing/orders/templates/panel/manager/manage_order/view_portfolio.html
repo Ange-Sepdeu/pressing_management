@@ -1,0 +1,54 @@
+{% extends 'base2.html' %}
+{% block content %}
+<div class="container mt-5">
+    <h2 class="text-center">View Portfolio</h2>
+    {% for profile in pressing_profiles %}
+        <div class="card mb-4">
+            <div class="card-header">
+                <h5>{{ profile.business_name }}</h5>
+            </div>
+            <div class="card-body">
+                <p><strong>Region:</strong> {{ profile.town.region.name }}</p>
+                <p><strong>Town:</strong> {{ profile.town.name }}</p>
+                <p><strong>Quarter:</strong> {{ profile.quarter }}</p>
+                <p><strong>Telephone:</strong> {{ profile.telephone_number }}</p>
+                <p><strong>Email:</strong> {{ profile.email }}</p>
+                <p><strong>Services Offered:</strong> {{ profile.services_offered }}</p>
+                <p><strong>Pricing:</strong> {{ profile.pricing }}</p>
+                <p><strong>About Us:</strong> {{ profile.about_us }}</p>
+                <p><strong>Pressing Count:</strong> {{ profile.pressing_count }}</p>
+                <p><strong>Social Media:</strong></p>
+                <ul>
+                    {% if profile.facebook_url %}<li><a href="{{ profile.facebook_url }}">Facebook</a></li>{% endif %}
+                    {% if profile.instagram_url %}<li><a href="{{ profile.instagram_url }}">Instagram</a></li>{% endif %}
+                    {% if profile.tiktok_url %}<li><a href="{{ profile.tiktok_url }}">TikTok</a></li>{% endif %}
+                    {% if profile.youtube_url %}<li><a href="{{ profile.youtube_url }}">YouTube</a></li>{% endif %}
+                </ul>
+
+                <h6>Photos:</h6>
+                <div class="row">
+                    {% for photo in profile.photos.all %}
+                        <div class="col-md-4">
+                            <img src="{{ photo.image.url }}" class="img-fluid" alt="Photo">
+                        </div>
+                    {% endfor %}
+                </div>
+
+                <h6>Videos:</h6>
+                <div class="row">
+                    {% for video in profile.videos.all %}
+                        <div class="col-md-4">
+                            <video controls>
+                                <source src="{{ video.video_file.url }}" type="video/mp4">
+                                Your browser does not support the video tag.
+                            </video>
+                        </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    {% empty %}
+        <p>No profiles available.</p>
+    {% endfor %}
+</div>
+{% endblock %}

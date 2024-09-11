@@ -1,6 +1,5 @@
 {% load static %}
 
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -9,8 +8,131 @@
     <title>{% block title %}PressPro Dashboard{% endblock %}</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
-    <link rel="stylesheet" href="{% static 'css/base2.css' %}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
+    <style>
 
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f8f9fa;
+            color: #343a40;
+        }
+    
+        .dashboard {
+            display: flex;
+            height: 100vh;
+        }
+    
+        .dashboard-nav {
+            width: 250px;
+            background-color: #343a40;
+            color: white;
+            padding: 20px;
+        }
+    
+        .brand-logo {
+            display: flex;
+            align-items: center;
+            margin-bottom: 20px;
+            color: white;
+            text-decoration: none;
+        }
+    
+        .brand-logo i {
+            font-size: 24px;
+            margin-right: 10px;
+        }
+    
+        .profile-avatar {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+    
+        .dashboard-nav-list {
+            list-style-type: none;
+            padding: 0;
+        }
+    
+        .dashboard-nav-item {
+            display: block;
+            padding: 10px 15px;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+        }
+    
+        .dashboard-nav-item:hover,
+        .dashboard-nav-item.active {
+            background-color: #495057;
+        }
+    
+        .logout-btn {
+            margin-top: 20px;
+            width: 100%;
+        }
+    
+        .container {
+            flex-grow: 1;
+            padding: 20px;
+        }
+    
+        .feedback-card {
+            margin-bottom: 20px;
+            border: 1px solid #dee2e6;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+    
+        .feedback-card h5 {
+            font-weight: bold;
+        }
+    
+        .modal-header {
+            background-color: #007bff;
+            color: white;
+        }
+    
+        .modal-content {
+            border-radius: 8px;
+        }
+    
+        .btn {
+            border-radius: 5px;
+        }
+    
+        @media (max-width: 768px) {
+            .dashboard {
+                flex-direction: column;
+                height: auto;
+            }
+    
+            .dashboard-nav {
+                width: 100%;
+                height: auto;
+            }
+    
+            .container {
+                padding: 10px;
+            }
+        }
+        header .profile-avatar {
+        display: flex;
+        align-items: center;
+        border: 2px solid #ffc107;
+        border-radius: 50%;
+        overflow: hidden;
+        width: 50px;
+        height: 50px;
+        background-color: #495057;
+        position: relative;
+    }
+    
+    header .profile-avatar img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        border-radius: 50%;
+    }
+    </style>
 </head>
 <body>
 
@@ -33,8 +155,8 @@
             <a href="{% url 'pressing_manager' %}" class="dashboard-nav-item active"><i class="fas fa-tachometer-alt"></i> Dashboard</a>
             <a href="{% url 'apply_portfolio' %}" class="dashboard-nav-item"><i class="fas fa-users-cog"></i> Apply Portfolio</a>
             <a href="{% url 'chat' %}" class="dashboard-nav-item"><i class="fas fa-comments"></i> Chat with Delivery Team</a>
-            <a href="#" class="dashboard-nav-item"><i class="fas fa-tasks"></i> Manage Orders</a>
-            <a href="#" class="dashboard-nav-item"><i class="fas fa-map-marked-alt"></i> Track Deliveries</a>
+            <a href="{% url 'view_portfolio' user_id=request.user.id %}" class="dashboard-nav-item"><i class="fas fa-tasks"></i> View Portfolio</a>
+            <a href="{% url 'track_deliveries' %}" class="dashboard-nav-item"><i class="fas fa-map-marked-alt"></i> Track Deliveries</a>
             <a href="{% url 'customer_feedback' %}" class="dashboard-nav-item"><i class="fas fa-thumbs-up"></i> Customer Feedback</a>
             <a href="#" class="dashboard-nav-item"><i class="fas fa-bell"></i> Notifications</a>
             <a href="{% url 'setting' %}" class="dashboard-nav-item"><i class="fas fa-cogs"></i> Settings</a>
@@ -52,4 +174,13 @@
 <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
+<script>
+    $(document).ready(function() {
+        $('.dashboard-nav-item').on('click', function() {
+            $('.dashboard-nav-item').removeClass('active');
+            $(this).addClass('active');
+        });
+    });
+</script>
+</body>
+</html>

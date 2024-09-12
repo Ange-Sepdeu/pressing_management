@@ -29,11 +29,14 @@ class Contact(models.Model):
 
 
 
+
+
 class Region(models.Model):
     name = models.CharField(max_length=255)
 
     def __str__(self):
         return self.name
+
 
 class Town(models.Model):
     name = models.CharField(max_length=255)
@@ -42,6 +45,7 @@ class Town(models.Model):
     def __str__(self):
         return self.name
 
+
 class Quarter(models.Model):
     name = models.CharField(max_length=255)
     town = models.ForeignKey(Town, on_delete=models.CASCADE, related_name='quarters')
@@ -49,41 +53,51 @@ class Quarter(models.Model):
     def __str__(self):
         return self.name
 
+
 class PressingProfile(models.Model):
-    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     business_name = models.CharField(max_length=255)
-    region = models.CharField(max_length=255, default='Center')
-    city = models.CharField(max_length=255, default='Yaoundé')
-    quarter = models.CharField(max_length=255, default='Mendong')
-    telephone_number = models.CharField(max_length=20, blank=True, null=True)
-    email = models.EmailField(blank=True, null=True)
+    telephone_number = models.CharField(max_length=15, null=False, default=0000000)
+    email = models.EmailField(null=True, blank=True)
     services_offered = models.TextField()
     pricing = models.TextField()
-    photos = models.ManyToManyField('Photo', blank=True, related_name='profiles')
-    videos = models.ManyToManyField('Video', blank=True, related_name='profiles')
     about_us = models.TextField()
-    approved = models.BooleanField(default=False)
-    pressing_count = models.IntegerField(default=1)
-    facebook_url = models.URLField(blank=True, null=True)
-    instagram_url = models.URLField(blank=True, null=True)
-    tiktok_url = models.URLField(blank=True, null=True)
-    youtube_url = models.URLField(blank=True, null=True)
-    town = models.ForeignKey(Town, on_delete=models.CASCADE, default=1)
-   
-
-
-
+    pressing_count = models.IntegerField(default=0)  # Add this line
+    region = models.ForeignKey(Region, on_delete=models.SET_NULL, null=True)
+    town = models.ForeignKey(Town, on_delete=models.SET_NULL, null=True)
+    quarter = models.ForeignKey(Quarter, on_delete=models.SET_NULL, null=True)
+    photos = models.ImageField(upload_to='photos/', blank=True, null=True)
+    videos = models.FileField(upload_to='videos/', blank=True, null=True)
+    tiktok_url = models.URLField(max_length=200, blank=True, null=True)
+    instagram_url = models.URLField(max_length=200, blank=True, null=True)
+    facebook_url = models.URLField(max_length=200, blank=True, null=True)
+    youtube_url = models.URLField(max_length=200, blank=True, null=True)
 
     def __str__(self):
         return self.business_name
+
+
+class PressingLocation(models.Model):
+    pressing_profile = models.ForeignKey(PressingProfile, on_delete=models.CASCADE, related_name='locations')
+    region = models.ForeignKey(Region, on_delete=models.CASCADE)
+    town = models.ForeignKey(Town, on_delete=models.CASCADE)
+    quarter = models.ForeignKey(Quarter, on_delete=models.CASCADE)
+
+    def __str__(self):
+        return f"{self.pressing_profile.business_name} - {self.region.name}, {self.town.name}, {self.quarter.name}"
+
 
 class Photo(models.Model):
     image = models.ImageField(upload_to='photos/')
     pressing_profile = models.ForeignKey(PressingProfile, related_name='photo_set', on_delete=models.CASCADE)
 
+
 class Video(models.Model):
     video_file = models.FileField(upload_to='videos/')
     pressing_profile = models.ForeignKey(PressingProfile, related_name='video_set', on_delete=models.CASCADE)
+
+
+
+
 
 
 
@@ -157,3 +171,18 @@ class ChatMessage(models.Model):
 
 
 
+class ChatRoom(models.Model):
+    name = models.CharField(max_length=255)
+    participants = models.ManyToManyField(settings.AUTH_USER_MODEL, related_name='chat_rooms')
+
+    def __str__(self):
+        return self.name
+
+class Message(models.Model):
+    room = models.ForeignKey(ChatRoom, on_delete=models.CASCADE, related_name='messages')
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    content = models.TextField()
+    timestamp = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f'{self.user.username}: {self.content[:50]}'

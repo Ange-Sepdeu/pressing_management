@@ -1,0 +1,95 @@
+
+{% load static %}
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Admin Dashboard{% endblock %}</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <style>
+        body {
+            display: flex;
+            min-height: 100vh;
+            background-color: #f8f9fa;
+        }
+        .dashboard {
+            display: flex;
+            width: 100%;
+        }
+        .dashboard-nav {
+            width: 250px;
+            background-color: #343a40;
+            color: #fff;
+            padding: 20px;
+        }
+        .brand-logo {
+            font-size: 1.5rem;
+            color: #fff;
+            text-decoration: none;
+        }
+        .dashboard-nav-item {
+            color: #ced4da;
+            text-decoration: none;
+            padding: 10px;
+            display: block;
+        }
+        .dashboard-nav-item:hover {
+            background-color: #495057;
+            color: #fff;
+        }
+        .profile-avatar {
+            margin: 20px 0;
+            text-align: center;
+        }
+        .logout-btn {
+            width: 100%;
+            margin-top: auto;
+        }
+    </style>
+</head>
+<body>
+    <div class="dashboard">
+        <div class="dashboard-nav">
+            <header>
+                <a href="{% url 'admin_panel' %}" class="brand-logo animate__animated animate__fadeInLeft">
+                    <i class="fas fa-tshirt"></i> 
+                    <span>PressPro admin Dashboard</span>
+                </a>
+                <div class="profile-avatar">
+                    {% if user.profile_picture %}
+                        <img src="{{ user.profile_picture.url }}" alt="{{ user.username }}'s Avatar" class="img-fluid rounded-circle" style="width: 80px; height: 80px;">
+                    {% else %}
+                        <img src="{% static 'image/auth.jpeg' %}" alt="Default Avatar" class="img-fluid rounded-circle" style="width: 80px; height: 80px;">
+                    {% endif %}
+                </div>
+            </header>
+            <nav class="dashboard-nav-list">
+                <a href="{% url 'admin_panel' %}" class="dashboard-nav-item"><i class="fas fa-tachometer-alt"></i> Dashboard</a>
+                <a href="{% url 'user_management' %}" class="dashboard-nav-item"><i class="fas fa-user-check"></i> User Management</a>
+                <a href="{% url 'add_pressing' %}" class="dashboard-nav-item"><i class="fas fa-tools"></i> Platform Management</a>
+                <a href="{% url 'analytics' %}" class="dashboard-nav-item"><i class="fas fa-chart-bar"></i> Analytics & Reporting</a>
+                <a href="{% url 'chat_room' 'delivery_chat' %}" class="dashboard-nav-item"><i class="fas fa-headset"></i> Chat with deliver</a>
+                <a href="#" class="dashboard-nav-item"><i class="fas fa-wallet"></i> Payment Management</a>
+                <a href="#" class="dashboard-nav-item"><i class="fas fa-handshake"></i> Partner Management</a>
+                <a href="{% url 'marketing_promotions' %}" class="dashboard-nav-item"><i class="fas fa-bullhorn"></i> Marketing & Promotions</a>
+                <a href="{% url 'setting' %}" class="dashboard-nav-item"><i class="fas fa-cogs"></i> Settings</a>
+                <a href="{% url 'about_us_dev' %}" class="dashboard-nav-item"><i class="fas fa-info-circle"></i> About Us Dev</a>
+            </nav>
+            <a href="{% url 'logout' %}" class="btn btn-primary logout-btn">Logout</a>
+        </div>
+        <div class="container-fluid">
+            {% block content %}{% endblock %}
+        </div>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // Custom JavaScript can go here
+    </script>
+</body>
+</html>

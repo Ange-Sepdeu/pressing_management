@@ -142,6 +142,12 @@ class MediaForm(forms.Form):
 
 
 
+
+
+
+
+
+
 class ReplyForm(forms.Form):
     message = forms.CharField(widget=forms.Textarea(attrs={'class': 'form-control', 'placeholder': 'Type your reply here...'}))
 

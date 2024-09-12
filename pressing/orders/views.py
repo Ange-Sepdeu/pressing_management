@@ -151,6 +151,9 @@ def admin_panel(request):
     }
 
     return render(request, 'panel/admin/admin_panel.html', context)
+
+
+
 @login_required
 def clients_panel(request):
     return render(request, 'panel/clients/clients_panel.html')
@@ -223,7 +226,6 @@ campay = CamPayClient({
 })
 
 
-
 @login_required
 def apply_portfolio(request):
     if request.method == 'POST':
@@ -236,18 +238,40 @@ def apply_portfolio(request):
             profile.user = request.user
             profile.save()
 
-            for photo in photos:
-                Photo.objects.create(image=photo, pressing_profile=profile)
-            for video in videos:
-                Video.objects.create(video_file=video, pressing_profile=profile)
+            pressing_count = int(request.POST.get('pressing_count', 1))
+
+            for i in range(1, pressing_count + 1):
+                region_id = request.POST.get(f'region_{i}')
+                town_id = request.POST.get(f'city_{i}')
+                quarter_id = request.POST.get(f'quarter_{i}')
+
+                region = Region.objects.get(id=region_id)
+                town = Town.objects.get(id=town_id)
+                quarter = Quarter.objects.get(id=quarter_id)
+
+                PressingLocation.objects.create(
+                    pressing_profile=profile,
+                    region=region,
+                    town=town,
+                    quarter=quarter
+                )
+
+                # Save photos and videos for each pressing location
+                photo_key = f'photo_{i}'
+                video_key = f'video_{i}'
+                
+                if photo_key in request.FILES:
+                    Photo.objects.create(image=request.FILES[photo_key], pressing_profile=profile)
+                
+                if video_key in request.FILES:
+                    Video.objects.create(video_file=request.FILES[video_key], pressing_profile=profile)
 
             return redirect('payment_page')
         else:
             messages.error(request, "Please correct the errors below.")
     else:
         profile_form = PressingProfileForm()
-    
-    # Fetch regions, towns, and quarters for use in the dynamic fields
+
     regions = Region.objects.all()
     towns = Town.objects.all()
     quarters = Quarter.objects.all()
@@ -258,20 +282,28 @@ def apply_portfolio(request):
         'towns': towns,
         'quarters': quarters,
     }
+
     return render(request, 'panel/manager/manage_order/apply_portfolio.html', context)
+
+
 
 
 
 def load_towns(request):
     region_id = request.GET.get('region_id')
-    towns = Town.objects.filter(region_id=region_id).all()
-    return JsonResponse(list(towns.values('id', 'name')), safe=False)
+    towns = Town.objects.filter(region_id=region_id).values('id', 'name')
+    return JsonResponse(list(towns), safe=False)
 
 def load_quarters(request):
     town_id = request.GET.get('town_id')
-    quarters = Quarter.objects.filter(town_id=town_id).all()
-    return JsonResponse(list(quarters.values('id', 'name')), safe=False)
-    
+    quarters = Quarter.objects.filter(town_id=town_id).values('id', 'name')
+    return JsonResponse(list(quarters), safe=False)
+
+
+
+
+
+
 
 
 
@@ -576,32 +608,34 @@ def add_pressing(request):
 
 
 
+from .models import ChatRoom, Message
+
+
 
 @login_required
-def chat_view(request):
-    users = CustomUser.objects.exclude(id=request.user.id)  # Get all users except the logged-in user
-    return render(request, 'panel/admin/chat/chat_room.html', {'users': users})
+def chat_room(request, room_name):
+    room, created = ChatRoom.objects.get_or_create(name=room_name)
+    room.participants.add(request.user)
+    return render(request, 'panel/admin/chat/chat_room.html', {'room_name': room_name})
 
 @login_required
 def send_message(request):
     if request.method == 'POST':
-        receiver_id = request.POST.get('receiver_id')
-        message_text = request.POST.get('message')
-
-        receiver = get_object_or_404(CustomUser, id=receiver_id)
-        message = ChatMessage.objects.create(sender=request.user, receiver=receiver, message=message_text)
-
-        return JsonResponse({'status': 'success', 'message_id': message.id})
+        room_name = request.POST.get('room_name')
+        content = request.POST.get('content')
+        room = get_object_or_404(ChatRoom, name=room_name)
+        message = Message.objects.create(room=room, user=request.user, content=content)
+        return JsonResponse({'message': message.content, 'user': message.user.username, 'timestamp': message.timestamp.isoformat()})
+    return JsonResponse({'error': 'Invalid request'}, status=400)
 
 @login_required
-def get_messages(request, user_id):
-    user = get_object_or_404(CustomUser, id=user_id)
-    messages = ChatMessage.objects.filter(
-        (models.Q(sender=request.user) & models.Q(receiver=user)) |
-        (models.Q(sender=user) & models.Q(receiver=request.user))
-    ).order_by('timestamp')
+def get_messages(request, room_name):
+    room = get_object_or_404(ChatRoom, name=room_name)
+    messages = room.messages.order_by('-timestamp').values('user__username', 'content', 'timestamp')
+    return JsonResponse(list(messages), safe=False)
 
-    return JsonResponse({'messages': list(messages.values())})
+
+
 
 
 

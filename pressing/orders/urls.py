@@ -3,9 +3,9 @@ from . import views
 from django.contrib.auth import views as auth_views  # Add this import
 from .views import apply_portfolio, payment_page, download_receipt  # Import process_payment
 from .views import chat_view, marketing_promotions, add_pressing
-from .views import send_message, get_messages, analytics_view, view_portfolio
+from .views import analytics_view, view_portfolio
 from .views import track_deliveries, view_deliveries, schedule_pickup, view_invoices, track_vehicle
-
+from .views import chat_room, send_message
 
 
 
@@ -30,6 +30,13 @@ urlpatterns = [
     path('setting/', views.setting, name='setting'),
     path('customer_feedback/', views.customer_feedback, name='customer_feedback'),
     path('apply-portfolio/', views.apply_portfolio, name='apply_portfolio'),
+    path('load-towns/', views.load_towns, name='load_towns'),
+    path('load-quarters/', views.load_quarters, name='load_quarters'),
+
+
+
+
+
     path('payment_page/', payment_page, name='payment_page'),
 
 
@@ -46,8 +53,17 @@ urlpatterns = [
     path('about_us_dev/', views.about_us_dev, name='about_us_dev'),
     path('marketing-promotions/', marketing_promotions, name='marketing_promotions'),
     path('platform_management/add_pressing/', add_pressing, name='add_pressing'),
-    path('chat/send/', send_message, name='send_message'),
-    path('chat/messages/<int:user_id>/', get_messages, name='get_messages'),
+
+
+    path('chat/<str:room_name>/', views.chat_room, name='chat_room'),
+    path('chat/send_message/', views.send_message, name='send_message'),
+    path('chat/get_messages/<str:room_name>/', views.get_messages, name='get_messages'),
+    
+ 
+
+
+
+
     path('analytics/', analytics_view, name='analytics'),
     path('portfolio/<int:user_id>/', view_portfolio, name='view_portfolio'),
 
@@ -58,7 +74,8 @@ urlpatterns = [
     path('schedule_pickup/', schedule_pickup, name='schedule_pickup'),
     path('view_invoices/', view_invoices, name='view_invoices'),
     path('track_vehicle/', track_vehicle, name='track_vehicle'),
-
+    path('chat/<str:room_name>/', chat_room, name='chat_room'),
+    path('send_message/<str:room_name>/', send_message, name='send_message'),
 
 
  
